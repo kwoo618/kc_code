@@ -2989,16 +2989,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cab0e8408dff574daa56fd76160ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monthText: {fileID: 0}
-  cashText: {fileID: 0}
-  savingsText: {fileID: 0}
-  loanText: {fileID: 0}
-  stressText: {fileID: 0}
-  salaryText: {fileID: 0}
-  bankPanel: {fileID: 0}
-  storePanel: {fileID: 0}
-  academyPanel: {fileID: 0}
-  reportPanel: {fileID: 0}
+  monthText: {fileID: 1459861695}
+  cashText: {fileID: 713281238}
+  savingsText: {fileID: 852172369}
+  loanText: {fileID: 1680003991}
+  stressText: {fileID: 1643826691}
+  salaryText: {fileID: 2105547928}
+  bankPanel: {fileID: 1549980622}
+  storePanel: {fileID: 256333754}
+  academyPanel: {fileID: 1552274851}
+  reportPanel: {fileID: 12918816}
   reportContent: {fileID: 0}
   resultPanel: {fileID: 0}
   resultTitle: {fileID: 0}
@@ -5284,6 +5284,7 @@ GameObject:
   - component: {fileID: 846014815}
   - component: {fileID: 846014814}
   - component: {fileID: 846014813}
+  - component: {fileID: 846014840}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -23292,7 +23293,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -4.047083, y: -27.730997}
+  m_Offset: {x: -4.047083, y: -20.521008}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -23303,7 +23304,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 34.046925, y: 17.196857}
+  m_Size: {x: 34.046925, y: 2.7768784}
   m_EdgeRadius: 0
 --- !u!61 &846014836
 BoxCollider2D:
@@ -23521,6 +23522,64 @@ PolygonCollider2D:
       - {x: -29.93986, y: -15.001686}
       - {x: 29.984411, y: -15.020014}
       - {x: 29.97933, y: -9.1514435}
+  m_UseDelaunayMesh: 0
+--- !u!60 &846014840
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846014808}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -22.18459, y: -18.46252}
+      - {x: -25.63325, y: -23.822159}
+      - {x: -27.065075, y: -32.576645}
+      - {x: -14.972685, y: -41.64324}
+      - {x: 14.427334, y: -38.951042}
+      - {x: 12.072991, y: -20.344326}
+      - {x: 12.068003, y: -36.10083}
+      - {x: 11.193125, y: -36.257996}
+      - {x: 11.38283, y: -37.087406}
+      - {x: 8.843057, y: -37.009632}
+      - {x: 8.74036, y: -36.182903}
+      - {x: -19.97612, y: -35.928574}
+      - {x: -20.031155, y: -18.12315}
   m_UseDelaunayMesh: 0
 --- !u!1 &851399136
 GameObject:
@@ -53160,7 +53219,7 @@ GameObject:
   - component: {fileID: 1459861696}
   - component: {fileID: 1459861695}
   m_Layer: 5
-  m_Name: Cash_Text
+  m_Name: Month_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
