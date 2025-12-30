@@ -47,6 +47,23 @@ public class GameManager : MonoBehaviour
     void Awake() { instance = this; }
     void Start() { UpdateUI(); CloseAllPanels(); }
 
+    public void OnCarAccident()
+    {
+        // 교통사고 패널티: 50,000원 차감 (원하는 금액으로 수정 가능)
+        int penalty = 50000;
+
+        // 현금이 부족하면 0까지만 차감
+        if (cash >= penalty) cash -= penalty;
+        else cash = 0;
+
+        // 스트레스 증가
+        stress += 10;
+        if (stress > 100) stress = 100;
+
+        ShowToast($"교통사고! 치료비 -{penalty:N0}원");
+        UpdateUI();
+    }
+
     // [다음 달로] 버튼 클릭 시 호출
     public void OnClickNextMonth()
     {
