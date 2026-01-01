@@ -2,10 +2,18 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    private static bool isGameStarted = false; // 처음 시작할때만 패널이 뜨게
+
+    [Header("--- 시작 및 종료 패널 ---")]
+    public GameObject startPanel;          // 시작 화면 (Play 버튼 있는 패널)
+    public GameObject successPanel;        // 10개월 성공 종료 패널
+    public GameObject failMoneyPanel;      // 파산 종료 패널
+    public GameObject failStressPanel;     // 스트레스 종료 패널
 
     [Header("--- 상단 HUD UI (TMP) ---")]
     public TextMeshProUGUI monthText;      // 1개월차
@@ -20,8 +28,8 @@ public class GameManager : MonoBehaviour
     public GameObject storePanel;          // 상점 창
     public GameObject academyPanel;        // 학원 창
     public GameObject reportPanel;         // [중요] 급여 명세서(보고서) 창
+    public GameObject resultPanel;        
     public TextMeshProUGUI reportContent;  // 명세서 내용 텍스트
-    public GameObject resultPanel;         // 게임 종료 결과 창
     public TextMeshProUGUI resultTitle;    
     public TextMeshProUGUI resultDesc;     
     public GameObject msgPanel;            // 토스트 알림 창
@@ -44,8 +52,76 @@ public class GameManager : MonoBehaviour
     private const int LIVING_COST = 500000;
     private bool isSavingsJoined = false;
 
-    void Awake() { instance = this; }
-    void Start() { UpdateUI(); CloseAllPanels(); }
+    void Awake()
+    {
+        // 싱글톤 패턴: 씬 이동 시 GameManager가 파괴되지 않게 합니다.
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        CloseAllPanels();
+
+        UpdateUI();
+        
+        if (!isGameStarted)
+        {
+            // 아직 한 번도 시작 버튼을 안 눌렀을 때 (최초 실행 시)
+            Time.timeScale = 0;
+            if (startPanel != null) startPanel.SetActive(true);
+        }
+        else
+        {
+            // 이미 게임 중 씬만 이동한 경우
+            Time.timeScale = 1;
+            if (startPanel != null) startPanel.SetActive(false);
+            
+            if (failMoneyPanel != null) failMoneyPanel.SetActive(false);
+            if (failStressPanel != null) failStressPanel.SetActive(false);
+            if (successPanel != null) successPanel.SetActive(false);
+        }
+    }
+
+    // [Play] 버튼에 연결할 함수
+    public void GameStart()
+    {
+        isGameStarted = true;
+        Time.timeScale = 1;
+        if (startPanel != null) startPanel.SetActive(false);
+        UpdateUI();
+    } 
+
+    // [Exit] 버튼 등에 연결할 게임 종료 함수
+    public void GameExit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+    // [Retry] 버튼 등에 연결할 재시작 함수
+    public void GameRestart()
+    {
+        isGameStarted = false; // 다시 처음부터 시작 패널이 뜨도록 초기화
+        Time.timeScale = 1;
+        
+        // 돈과 데이터 초기화 (필요시)
+        currentMonth = 1;
+        cash = 300000;
+        stress = 0;
+        
+        SceneManager.LoadScene("Main"); // 메인 씬 이름에 맞게 수정
+    }
 
     public void OnCarAccident()
     {
@@ -67,7 +143,7 @@ public class GameManager : MonoBehaviour
     // [다음 달로] 버튼 클릭 시 호출
     public void OnClickNextMonth()
     {
-        if (currentMonth >= 12) { EndGame("완료"); return; }
+        if (currentMonth >= 10) { EndGame("완료"); return; }
 
         int currentSalary = BASE_SALARY + ((jobLevel - 1) * 100000);
 
@@ -182,6 +258,11 @@ public class GameManager : MonoBehaviour
         if (reportPanel) reportPanel.SetActive(false);
         if (resultPanel) resultPanel.SetActive(false);
         if (msgPanel) msgPanel.SetActive(false);
+
+        // ---- 시작, 종료 패널들 ---- //
+        if (successPanel) successPanel.SetActive(false);
+        if (failMoneyPanel) failMoneyPanel.SetActive(false);
+        if (failStressPanel) failStressPanel.SetActive(false);
     }
 
     void UpdateUI() {
@@ -213,17 +294,17 @@ public class GameManager : MonoBehaviour
     }
 
     void EndGame(string type) {
-        resultPanel.SetActive(true);
-        long total = cash + savings - loan;
-        string title = "", desc = "";
+        Time.timeScale = 0; // 게임 시간 정지
+        CloseAllPanels();
 
-        if (type == "스트레스") { title = "과로사"; desc = "스트레스 누적으로 병원에 실려갔습니다."; }
-        else if (type == "파산") { title = "파산"; desc = "더 이상 낼 돈이 없습니다."; }
-        else {
-            title = "성공적인 퇴사";
-            desc = $"최종 자산 현황\n현금: {cash:N0}\n적금: {savings:N0}\n대출: -{loan:N0}\n\n<b>총 자산: {total:N0}</b>";
+        if (type == "스트레스") {
+            if (failStressPanel != null) failStressPanel.SetActive(true);
         }
-        resultTitle.text = title;
-        resultDesc.text = desc;
+        else if (type == "파산") {
+            if (failMoneyPanel != null) failMoneyPanel.SetActive(true);
+        }
+        else {
+            if (successPanel != null) successPanel.SetActive(true);
+        }
     }
 }
