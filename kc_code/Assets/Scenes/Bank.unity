@@ -11680,7 +11680,7 @@ GameObject:
   - component: {fileID: 1430618448}
   - component: {fileID: 1430618447}
   m_Layer: 0
-  m_Name: MainPortal
+  m_Name: MainMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11698,7 +11698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc35315c5e6e49c881fb6e2bb97e607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: MainScene
+  targetSceneName: CompanyMain
 --- !u!61 &1430618448
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11753,7 +11753,7 @@ Transform:
   m_GameObject: {fileID: 1430618446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.61, y: -7.11, z: -0.2538735}
+  m_LocalPosition: {x: 5.3, y: -7.8, z: -0.2538735}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
