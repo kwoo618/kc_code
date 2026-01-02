@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject storePanel;
     public GameObject academyPanel;
     public GameObject reportPanel;
+    public GameObject nextPanel;
 
     [Header("--- 명세서 UI (각 항목별 연결) ---")]
     public TextMeshProUGUI txtReportSalary;
@@ -40,8 +41,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI txtReportS_Interest;
     public TextMeshProUGUI txtReportFinal;
 
-    [Header("--- 결과 화면 점수 표시 (NEW) ---")]
-    public TextMeshProUGUI txtResultScore;  // 여기에 Total_Score를 연결하세요!
+    [Header("--- 결과 화면 점수 표시 ---")]
+    public TextMeshProUGUI txtResultScore;
 
     [Header("--- 버튼 관련 ---")]
     public Button savingsJoinBtn;
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
         stress += 20;
         if (stress > 100) stress = 100;
 
-        // --- 명세서 UI 값 넣기 ---
+        // --- 명세서 UI ---
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
         if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
         if (txtReportHealth) txtReportHealth.text = $"-{health:N0}";
@@ -216,11 +217,13 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
+    // --- 버튼 액션들 (수정됨: 패널 닫기 코드 삭제) ---
     public void ActionBorrow()
     {
         if (loan >= 2000000) return;
         loan += 500000; cash += 500000;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // 삭제됨: 이제 창이 안 닫힘
     }
 
     public void ActionRepay()
@@ -228,42 +231,49 @@ public class GameManager : MonoBehaviour
         if (loan <= 0) return;
         if (cash < 500000) return;
         loan -= 500000; cash -= 500000;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // 삭제됨
     }
 
     public void ActionJoinSavings()
     {
         if (isSavingsJoined) return;
         isSavingsJoined = true;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // 삭제됨
     }
 
     public void ActionBuy()
     {
         if (cash < 50000) return;
         cash -= 50000; stress -= 30; if (stress < 0) stress = 0;
-        UpdateUI(); storePanel.SetActive(false);
+        UpdateUI();
+        // storePanel.SetActive(false); // 삭제됨
     }
 
     public void ActionStudy()
     {
         if (cash < 100000) return;
         cash -= 100000; jobLevel++; stress += 10; if (stress > 100) stress = 100;
-        UpdateUI(); academyPanel.SetActive(false);
+        UpdateUI();
+        // academyPanel.SetActive(false); // 삭제됨
     }
 
     public void ActionRest()
     {
         stress -= 10; if (stress < 0) stress = 0;
-        UpdateUI(); academyPanel.SetActive(false);
+        UpdateUI();
+        // academyPanel.SetActive(false); // 삭제됨
     }
 
+    // --- [중요] X 버튼에 연결할 함수 ---
     public void CloseAllPanels()
     {
         if (bankPanel) bankPanel.SetActive(false);
         if (storePanel) storePanel.SetActive(false);
         if (academyPanel) academyPanel.SetActive(false);
         if (reportPanel) reportPanel.SetActive(false);
+        if (nextPanel) nextPanel.SetActive(false);
 
         if (successPanel) successPanel.SetActive(false);
         if (failMoneyPanel) failMoneyPanel.SetActive(false);
@@ -290,13 +300,11 @@ public class GameManager : MonoBehaviour
         if (isSavingsJoined && savingsJoinBtn != null) savingsJoinBtn.interactable = false;
     }
 
-    // --- [중요] 게임 종료 및 점수 표시 ---
     void EndGame(string type)
     {
         Time.timeScale = 0;
         CloseAllPanels();
 
-        // 최종 점수 계산 (현금 + 적금 - 대출)
         long finalScore = cash + savings - loan;
 
         if (type == "스트레스")
@@ -309,10 +317,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // 성공했을 때만 점수 표시
             if (successPanel) successPanel.SetActive(true);
-
-            // 점수 텍스트 갱신
             if (txtResultScore != null)
             {
                 txtResultScore.text = $"TOTAL SCORE: {finalScore:N0}";
