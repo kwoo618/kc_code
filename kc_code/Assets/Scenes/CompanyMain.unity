@@ -3324,12 +3324,17 @@ MonoBehaviour:
   storePanel: {fileID: 256333754}
   academyPanel: {fileID: 1552274851}
   reportPanel: {fileID: 12918816}
-  resultPanel: {fileID: 0}
-  reportContent: {fileID: 0}
-  resultTitle: {fileID: 0}
-  resultDesc: {fileID: 0}
-  msgPanel: {fileID: 0}
-  msgText: {fileID: 0}
+  txtReportSalary: {fileID: 0}
+  txtReportPension: {fileID: 0}
+  txtReportHealth: {fileID: 0}
+  txtReportTax: {fileID: 0}
+  txtReportLoan: {fileID: 0}
+  txtReportNetPay: {fileID: 0}
+  txtReportLiving: {fileID: 0}
+  txtReportSavings: {fileID: 0}
+  txtReportS_Interest: {fileID: 0}
+  txtReportFinal: {fileID: 0}
+  txtResultScore: {fileID: 0}
   savingsJoinBtn: {fileID: 0}
   savingsBtnText: {fileID: 0}
   currentMonth: 1
@@ -5076,7 +5081,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 710389233}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 381450270}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CloseAllPanels
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &710389233
 MonoBehaviour:
   m_ObjectHideFlags: 0
