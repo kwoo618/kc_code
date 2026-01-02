@@ -1,60 +1,59 @@
-//using UnityEngine;
+using UnityEngine;
 
-//public class CarMover : MonoBehaviour
-//{
-//    [Header("ÀÌµ¿ ¼³Á¤")]
-//    public Transform startPoint; // Ãâ¹ß ÁöÁ¡
-//    public Transform endPoint;   // µµÂø ÁöÁ¡
-//    public float speed = 5f;     // ÀÌµ¿ ¼Óµµ
+public class CarMover : MonoBehaviour
+{
+    [Header("ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public Transform startPoint; // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Transform endPoint;   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float speed = 5f;     // ï¿½Ìµï¿½ ï¿½Óµï¿½
 
-//    [Header("¾Ö´Ï¸ÞÀÌ¼Ç ¼³Á¤")]
-//    public bool isHorizontalCar = false; // °¡·Î·Î ¿òÁ÷ÀÌ´Â Â÷ÀÎ°¡? (Ã¼Å©ÇÏ¸é À§¾Æ·¡·Î µÕ½Ç°Å¸²)
-//    public float bobSpeed = 10f;  // µÕ½Ç°Å¸®´Â ¼Óµµ
-//    public float bobAmount = 0.05f; // µÕ½Ç°Å¸®´Â ³ôÀÌ
+    [Header("ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public bool isHorizontalCar = false; // ï¿½ï¿½ï¿½Î·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½Î°ï¿½? (Ã¼Å©ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½Õ½Ç°Å¸ï¿½)
+    public float bobSpeed = 10f;  // ï¿½Õ½Ç°Å¸ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    public float bobAmount = 0.05f; // ï¿½Õ½Ç°Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-//    [Header("Ãæµ¹ ¼³Á¤")]
-//    public int damageCooldown = 2; // ¿¬¼Ó Ãæµ¹ ¹æÁö ½Ã°£ (ÃÊ)
+    [Header("ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½")]
+    public int damageCooldown = 2; // ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½)
 
-//    private float _canDamageTime = 0f;
+    private float _canDamageTime = 0f;
 
-//    void Start()
-//    {
-//        // ½ÃÀÛ À§Ä¡·Î ÃÊ±âÈ­
-//        transform.position = startPoint.position;
-//    }
+    void Start()
+    {
+        transform.position = startPoint.position;
+    }
 
-//    void Update()
-//    {
-//        // 1. ÀÏ´Ü ¸ñÀûÁö ÂÊÀ¸·Î XÃà¸¸ ÀÌµ¿ÇÑ´Ù°í °¡Á¤ (±âº» ÀÌµ¿)
-//        transform.position = Vector3.MoveTowards(transform.position, endPoint.position, speed * Time.deltaTime);
+    void Update()
+    {
+        // 1. ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Xï¿½à¸¸ ï¿½Ìµï¿½ï¿½Ñ´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½âº» ï¿½Ìµï¿½)
+        transform.position = Vector3.MoveTowards(transform.position, endPoint.position, speed * Time.deltaTime);
 
-//        // 2. °¡·Î ¹æÇâ Â÷¶ó¸é -> YÃà(³ôÀÌ)À» °­Á¦·Î »çÀÎÆÄ(Sin)·Î µ¤¾î¾º¿ò
-//        if (isHorizontalCar)
-//        {
-//            // ¿ø·¡ ³ôÀÌ(startPoint.y)¸¦ ±âÁØÀ¸·Î À§¾Æ·¡·Î Èçµé¸²
-//            float newY = startPoint.position.y + Mathf.Sin(Time.time * bobSpeed) * bobAmount;
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ -> Yï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(Sin)ï¿½ï¿½ ï¿½ï¿½ï¿½î¾ºï¿½ï¿½
+        if (isHorizontalCar)
+        {
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(startPoint.y)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½é¸²
+            float newY = startPoint.position.y + Mathf.Sin(Time.time * bobSpeed) * bobAmount;
 
-//            // ÇöÀç X, Z´Â À¯ÁöÇÏ°í Y¸¸ ±³Ã¼
-//            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-//        }
+            // ï¿½ï¿½ï¿½ï¿½ X, Zï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ Yï¿½ï¿½ ï¿½ï¿½Ã¼
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        }
 
-//        // 3. µµÂø Ã¼Å© ¹× ¸®¼Â
-//        if (Vector3.Distance(transform.position, endPoint.position) < 0.1f)
-//        {
-//            transform.position = startPoint.position;
-//        }
-//    }
+        // 3. ï¿½ï¿½ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (Vector3.Distance(transform.position, endPoint.position) < 0.1f)
+        {
+            transform.position = startPoint.position;
+        }
+    }
 
-//    // ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹ Ã³¸®
-//    void OnTriggerEnter2D(Collider2D other)
-//    {
-//        // ÄðÅ¸ÀÓÀÌ Áö³µ°í, Ãæµ¹ÇÑ ´ë»óÀÌ ÇÃ·¹ÀÌ¾î¶ó¸é
-//        if (other.CompareTag("Player") && Time.time >= _canDamageTime)
-//        {
-//            _canDamageTime = Time.time + damageCooldown; // ÄðÅ¸ÀÓ °»½Å
-//            GameManager.instance.OnCarAccident(); // µ· ±ð±â
-//        }
-//    }
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½æµ¹ Ã³ï¿½ï¿½
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½
+        if (other.CompareTag("Player") && Time.time >= _canDamageTime)
+        {
+            _canDamageTime = Time.time + damageCooldown; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            GameManager.instance.OnCarAccident(); // ï¿½ï¿½ ï¿½ï¿½ï¿½
+        }
+    }
 
 
-//}
+}

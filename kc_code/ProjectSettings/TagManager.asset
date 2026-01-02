@@ -59,6 +59,12 @@ TagManager:
   - name: electnicline
     uniqueID: 774845697
     locked: 0
+  - name: Car
+    uniqueID: 2553694303
+    locked: 0
   - name: Player
     uniqueID: 4207705725
+    locked: 0
+  - name: Object2
+    uniqueID: 3090342547
     locked: 0

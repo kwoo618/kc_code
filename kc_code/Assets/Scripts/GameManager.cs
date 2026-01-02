@@ -62,19 +62,16 @@ public class GameManager : MonoBehaviour
     public int jobLevel = 1;
     public int baseSalary = 2000000;
 
-    // [밸런스 수정] 생활비 100만원으로 인상
     private const int MONTHLY_SAVINGS_AMOUNT = 500000;
     private const int LIVING_COST = 1000000;
     private bool isSavingsJoined = false;
 
-    // [기능 추가] 월 1회 제한 체크용 변수
     private bool hasStudiedThisMonth = false;
     private bool hasPromotedThisMonth = false;
 
     void Awake()
     {
-        if (instance == null) { instance = this; DontDestroyOnLoad(gameObject); }
-        else { Destroy(gameObject); }
+        instance = this;
     }
 
     void Start()
@@ -111,25 +108,20 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    // [기능 1] 메인 메뉴로 돌아가기 (기존 GameRestart)
-    // -> Start_Panel이 뜹니다.
     public void GameRestart()
     {
-        isGameStarted = false; // "게임 시작 전" 상태로 설정
-        ResetGameData();       // 데이터 초기화
+        isGameStarted = false;
+        ResetGameData();
         SceneManager.LoadScene("MainScene");
     }
 
-    // [기능 2] 바로 다시 시작하기 (NEW)
-    // -> Start_Panel 없이 바로 1개월차 시작!
     public void GameRetry()
     {
-        isGameStarted = true;  // "게임 시작됨" 상태로 설정
-        ResetGameData();       // 데이터 초기화
+        isGameStarted = true;
+        ResetGameData();
         SceneManager.LoadScene("MainScene");
     }
 
-    // (공통) 데이터 초기화 함수 (코드를 깔끔하게 하기 위해 분리)
     void ResetGameData()
     {
         Time.timeScale = 1;
@@ -147,21 +139,19 @@ public class GameManager : MonoBehaviour
 
     public void OnClickNextMonth()
     {
+        // 10개월이 이미 지났다면 작동 방지
         if (currentMonth > 10) return;
 
         CloseAllPanels();
-
         CalculateAndShowReport();
 
         if (reportPanel) reportPanel.SetActive(true);
-
         Time.timeScale = 0;
     }
 
     void CalculateAndShowReport()
     {
         int currentSalary = baseSalary;
-
         int pension = (int)(currentSalary * 0.045f);
         int health = (int)(currentSalary * 0.035f);
         int tax = (int)(currentSalary * 0.03f);
@@ -193,7 +183,7 @@ public class GameManager : MonoBehaviour
         cash += netPay;
         cash -= LIVING_COST;
 
-        // [밸런스] 다음 달 스트레스 +60
+        // 월 정기 스트레스 증가
         stress += 60;
 
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
@@ -223,6 +213,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FadeSequence()
     {
+        // 페이드 아웃 연출
         if (fadeImage != null)
         {
             fadeImage.gameObject.SetActive(true);
@@ -238,36 +229,38 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.5f);
 
-        // 날짜 변경 및 초기화
+        // 한 달이 지나감
         currentMonth++;
-
-        // [중요] 다음 달이 되었으니 행동 제한 초기화!
         hasStudiedThisMonth = false;
         hasPromotedThisMonth = false;
 
+        // [중요] 10개월을 무사히 마치고 11개월차로 넘어가는 순간 승리 처리
         if (currentMonth > 10)
         {
             if (fadeImage != null)
             {
-                float t = 1;
-                while (t > 0)
-                {
-                    t -= Time.unscaledDeltaTime * 2f;
-                    fadeImage.color = new Color(0, 0, 0, t);
-                    yield return null;
-                }
                 fadeImage.color = new Color(0, 0, 0, 0);
                 fadeImage.gameObject.SetActive(false);
             }
-            EndGame("완료");
+            EndGame("완료"); // 여기서 SuccessPanel이 활성화됨
             yield break;
         }
 
-        if (stress >= 100) EndGame("스트레스");
-        else if (cash < 0) EndGame("파산");
+        // 중간 패배 조건 체크
+        if (stress >= 100)
+        {
+            EndGame("스트레스");
+            yield break;
+        }
+        else if (cash < 0)
+        {
+            EndGame("파산");
+            yield break;
+        }
 
         UpdateUI();
 
+        // 페이드 인 연출
         if (fadeImage != null)
         {
             float t = 1;
@@ -298,10 +291,8 @@ public class GameManager : MonoBehaviour
         if (alertPanel) alertPanel.SetActive(false);
     }
 
-    // --- [기능] 실무 참여 (월 1회 제한 + 밸런스 조정) ---
     public void ActionPromotion()
     {
-        // 1. 횟수 제한 체크
         if (hasPromotedThisMonth)
         {
             ShowAlert("이번 달은 더 이상 참여할 수 없습니다.\n(월 1회 제한)");
@@ -313,12 +304,8 @@ public class GameManager : MonoBehaviour
 
         cash -= 500000;
         baseSalary += 500000;
-
-        // [밸런스] 스트레스 대폭 증가
         stress += 40;
         if (stress > 100) stress = 100;
-
-        // 실행 완료 표시
         hasPromotedThisMonth = true;
 
         ShowAlert("실무 참여 완료!\n월급이 인상되었습니다.");
@@ -326,10 +313,8 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
-    // --- [기능] 공부하기 (월 1회 제한) ---
     public void ActionStudy()
     {
-        // 1. 횟수 제한 체크
         if (hasStudiedThisMonth)
         {
             ShowAlert("이번 달 공부는 이미 마쳤습니다.\n(월 1회 제한)");
@@ -342,13 +327,11 @@ public class GameManager : MonoBehaviour
         jobLevel++;
         stress += 10;
         if (stress > 100) stress = 100;
-
-        // 실행 완료 표시
         hasStudiedThisMonth = true;
 
         UpdateUI();
         ShowAlert("직무 능력 향상!\n(월급 인상 기대 가능)");
-        CloseAllPanels(); // 학원 창 닫기
+        CloseAllPanels();
     }
 
     public void ActionBorrow()
@@ -373,21 +356,16 @@ public class GameManager : MonoBehaviour
     public void ActionBuy()
     {
         if (cash < 50000) { ShowAlert("돈이 부족합니다."); return; }
-
-        // [밸런스] 쇼핑 효율 감소 (-30 -> -20)
         cash -= 50000;
         stress -= 20;
         if (stress < 0) stress = 0;
-
         UpdateUI();
     }
 
     public void ActionRest()
     {
-        // [밸런스] 휴식 효율 증가 (-10 -> -20)
         stress -= 20;
         if (stress < 0) stress = 0;
-
         UpdateUI();
     }
 
@@ -407,7 +385,6 @@ public class GameManager : MonoBehaviour
         if (reportPanel) reportPanel.SetActive(false);
         if (nextPanel) nextPanel.SetActive(false);
         if (alertPanel) alertPanel.SetActive(false);
-
         if (successPanel) successPanel.SetActive(false);
         if (failMoneyPanel) failMoneyPanel.SetActive(false);
         if (failStressPanel) failStressPanel.SetActive(false);
@@ -436,12 +413,18 @@ public class GameManager : MonoBehaviour
         CloseAllPanels();
         long finalScore = cash + savings - loan;
 
-        if (type == "스트레스") if (failStressPanel) failStressPanel.SetActive(true);
-            else if (type == "파산") if (failMoneyPanel) failMoneyPanel.SetActive(true);
-                else
-                {
-                    if (successPanel) successPanel.SetActive(true);
-                    if (txtResultScore != null) txtResultScore.text = $"TOTAL SCORE: {finalScore:N0}";
-                }
+        if (type == "스트레스")
+        {
+            if (failStressPanel) failStressPanel.SetActive(true);
+        }
+        else if (type == "파산")
+        {
+            if (failMoneyPanel) failMoneyPanel.SetActive(true);
+        }
+        else // type == "완료"
+        {
+            if (successPanel) successPanel.SetActive(true);
+            if (txtResultScore != null) txtResultScore.text = $"TOTAL SCORE: {finalScore:N0}";
+        }
     }
 }

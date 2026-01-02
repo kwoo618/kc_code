@@ -1,0 +1,994 @@
+fileFormatVersion: 2
+guid: b3fa58e606e4f4950b79f4112010fd58
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28436be798aea413695a82dd9f253827
+      internalID: -100055276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e648f96d16e1486b9de84c267d4f0b9
+      internalID: -1942018297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef52623aeaa534cc9b823293040a7c85
+      internalID: 1379403037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc62404a7c71e4986994d32ac3b0a72d
+      internalID: 1260029638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f99ea61a953c464fae3d39d8ac36c0d
+      internalID: 1466315137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f53edabfb73de4d7a91b48181113ce71
+      internalID: -1361474181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c961afff7ab1b4717ad46c41a9fd51b3
+      internalID: -447789230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14553d2be6c574311aaa210e4fc30a42
+      internalID: 1798857178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_8
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30f2de0a3c14a463aa06b96091b2bd64
+      internalID: 1385091263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 319dea046df6f48cead27f521e54feaa
+      internalID: -566607290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6638a9f8a618e4213a26a906f7191de8
+      internalID: -1194716908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_11
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89d962bc5f94e4b25b18871b38d064a1
+      internalID: 689483695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_12
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 790b29e68c5524d84ae58be10e410fbf
+      internalID: -1249984217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_13
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf23670c1bdfe44b69ccfd6e5462a81a
+      internalID: 1685221062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 668c7d91c08f7488a87fd2b516de0c62
+      internalID: -325878255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d75cf93296a63411ab9ab3127752c025
+      internalID: -321074507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_16
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e11c704363cda48e8bb921da105a6642
+      internalID: 2068781737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_17
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b521d1eeac54c416aa878a211a4b4ed0
+      internalID: -374344290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_18
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 568a972c1b2ec4aa3b3ff0a482346465
+      internalID: -1490638417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_19
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84da8d3c3e0894432823f9b7ecb1ad6b
+      internalID: 63813671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 489b41d87dfd548d1ac722b2359eed2e
+      internalID: -144631619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_21
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e4e6b10e2a3045969030c106eadffb1
+      internalID: -200708261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_22
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 020af0bbd17394e3984e4d5e9dca7499
+      internalID: 1953629833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_23
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e8f4b7f10df6464dba00122a9178d64
+      internalID: 346916799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_24
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 570e7c2c1070c4e859a03dcd28fb4aab
+      internalID: -1262547485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acdecbcb1d17645c4af441a0fc8ad89d
+      internalID: 1941117304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_26
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e37025d74ba84ca895a60e5465dc749
+      internalID: 686489238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_27
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04a10fb542768411da41e40b0bb3808f
+      internalID: 1157529685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_28
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bad6d94f6fd848b08ad8a2e6fa52c83
+      internalID: 126030837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_29
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc9ed7f8a6a86401c8b8332489bb9dfd
+      internalID: 1531857591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec25f1a7c514e45a7ae92b44593c0fa2
+      internalID: 935328468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_31
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afc0fc889b2d048728950f352dca9672
+      internalID: 1788611963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_32
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1747d2e1baa0e44d39b0214eadb0fc3d
+      internalID: 1277757939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_33
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62de0884f844a49aca4e22e27908534a
+      internalID: -616284966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_34
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40ef75eaa19d345edb73d12af63241d8
+      internalID: -907031552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0b1797fbf7fa4ba395292517906c1dd
+      internalID: 850921119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_36
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60248e3f813554cf08c0374dd7460004
+      internalID: -1186653893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_37
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 813a0054c10a14cee81d3d9838a99498
+      internalID: -2087649519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_38
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1df8f63e08e1740809c7db908a1a2ffb
+      internalID: -1984889603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_39
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0fe11774b02b49bca2987d499e61ba1
+      internalID: -2048260254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_0: -100055276
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_1: -1942018297
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_10: -1194716908
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_11: 689483695
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_12: -1249984217
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_13: 1685221062
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_14: -325878255
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_15: -321074507
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_16: 2068781737
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_17: -374344290
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_18: -1490638417
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_19: 63813671
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_2: 1379403037
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_20: -144631619
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_21: -200708261
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_22: 1953629833
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_23: 346916799
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_24: -1262547485
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_25: 1941117304
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_26: 686489238
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_27: 1157529685
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_28: 126030837
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_29: 1531857591
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_3: 1260029638
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_30: 935328468
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_31: 1788611963
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_32: 1277757939
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_33: -616284966
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_34: -907031552
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_35: 850921119
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_36: -1186653893
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_37: -2087649519
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_38: -1984889603
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_39: -2048260254
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_4: 1466315137
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_5: -1361474181
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_6: -447789230
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_7: 1798857178
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_8: 1385091263
+      ME_Singles_Shopping_Center_and_Markets_16x16_Market_Small_11_9: -566607290
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

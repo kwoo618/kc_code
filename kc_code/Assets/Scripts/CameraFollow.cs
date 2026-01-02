@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;       // µû¶ó°¥ ´ë»ó (ÇÃ·¹ÀÌ¾î)
-    public float smoothSpeed = 0.125f; // µû¶ó°¡´Â ¼Óµµ (0~1 »çÀÌ, ÀÛÀ»¼ö·Ï ºÎµå·¯¿ò)
-    public Vector3 offset = new Vector3(0, 0, -10); // Ä«¸Ş¶ó °Å¸® (Z°ª -10 À¯Áö ÇÊ¼ö)
+    public Transform target;       // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½Ã·ï¿½ï¿½Ì¾ï¿½)
+    public float smoothSpeed = 0.125f; // ï¿½ï¿½ï¿½ó°¡´ï¿½ ï¿½Óµï¿½ (0~1 ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·¯ï¿½ï¿½)
+    public Vector3 offset = new Vector3(0, 0, -10); // Ä«ï¿½Ş¶ï¿½ ï¿½Å¸ï¿½ (Zï¿½ï¿½ -10 ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¼ï¿½)
 
-    // ¸Ê ¹ÛÀ¸·Î Ä«¸Ş¶ó°¡ ¸ø ³ª°¡°Ô ÇÏ·Á¸é ¾Æ·¡ °ª ¼³Á¤ (ÇÊ¿ä ¾øÀ¸¸é ¹«½Ã)
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     public bool useLimit = false;
     public Vector2 minLimit;
     public Vector2 maxLimit;
@@ -15,13 +15,13 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        // ¸ñÇ¥ À§Ä¡ °è»ê
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         Vector3 desiredPosition = target.position + offset;
 
-        // ºÎµå·¯¿î ÀÌµ¿ (Lerp)
+        // ï¿½Îµå·¯ï¿½ï¿½ ï¿½Ìµï¿½ (Lerp)
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
 
-        // ¸Ê Á¦ÇÑ Àû¿ë (Ã¼Å©ÇßÀ» °æ¿ì¸¸)
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (Ã¼Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¸¸)
         if (useLimit)
         {
             smoothedPosition.x = Mathf.Clamp(smoothedPosition.x, minLimit.x, maxLimit.x);
@@ -29,5 +29,21 @@ public class CameraFollow : MonoBehaviour
         }
 
         transform.position = smoothedPosition;
+    }
+    // [ì¶”ê°€] í…”ë ˆí¬íŠ¸ ì‹œ ì¹´ë©”ë¼ë¥¼ ì¦‰ì‹œ ì´ë™ì‹œí‚¤ëŠ” í•¨ìˆ˜
+    public void TeleportCamera()
+    {
+        if (target == null) return;
+        
+        // ë³´ê°„(Lerp) ì—†ì´ ì¦‰ì‹œ ëª©í‘œ ìœ„ì¹˜ë¡œ ì„¤ì •
+        Vector3 targetPos = target.position + offset;
+        
+        if (useLimit)
+        {
+            targetPos.x = Mathf.Clamp(targetPos.x, minLimit.x, maxLimit.x);
+            targetPos.y = Mathf.Clamp(targetPos.y, minLimit.y, maxLimit.y);
+        }
+        
+        transform.position = targetPos;
     }
 }
