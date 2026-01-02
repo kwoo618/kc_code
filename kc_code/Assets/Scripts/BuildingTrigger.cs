@@ -8,13 +8,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private static bool isGameStarted = false;
 
-    [Header("--- ÏãúÏûë Î∞è Ï¢ÖÎ£å Ìå®ÎÑê ---")]
+    [Header("--- Ω√¿€ π◊ ¡æ∑· ∆–≥Œ ---")]
     public GameObject startPanel;
     public GameObject successPanel;
     public GameObject failMoneyPanel;
     public GameObject failStressPanel;
 
-    [Header("--- ÏÉÅÎã® HUD UI (TMP) ---")]
+    [Header("--- ªÛ¥‹ HUD UI (TMP) ---")]
     public TextMeshProUGUI monthText;
     public TextMeshProUGUI cashText;
     public TextMeshProUGUI savingsText;
@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI stressText;
     public TextMeshProUGUI salaryText;
 
-    [Header("--- ÌåùÏóÖ Ìå®ÎÑê Î¶¨Ïä§Ìä∏ ---")]
+    [Header("--- ∆Àæ˜ ∆–≥Œ ∏ÆΩ∫∆Æ ---")]
     public GameObject bankPanel;
     public GameObject storePanel;
     public GameObject academyPanel;
     public GameObject reportPanel;
 
-    [Header("--- Î™ÖÏÑ∏ÏÑú UI (Í∞Å Ìï≠Î™©Î≥Ñ Ïó∞Í≤∞) ---")]
+    [Header("--- ∏Ìººº≠ UI (∞¢ «◊∏Ò∫∞ ø¨∞·) ---")]
     public TextMeshProUGUI txtReportSalary;
     public TextMeshProUGUI txtReportPension;
     public TextMeshProUGUI txtReportHealth;
@@ -40,14 +40,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI txtReportS_Interest;
     public TextMeshProUGUI txtReportFinal;
 
-    [Header("--- Í≤∞Í≥º ÌôîÎ©¥ Ï†êÏàò ÌëúÏãú (NEW) ---")]
-    public TextMeshProUGUI txtResultScore;  // Ïó¨Í∏∞Ïóê Total_ScoreÎ•º Ïó∞Í≤∞ÌïòÏÑ∏Ïöî!
+    [Header("--- ∞·∞˙ »≠∏È ¡°ºˆ «•Ω√ ---")]
+    public TextMeshProUGUI txtResultScore;
 
-    [Header("--- Î≤ÑÌäº Í¥ÄÎ†® ---")]
+    [Header("--- πˆ∆∞ ∞¸∑√ ---")]
     public Button savingsJoinBtn;
     public TextMeshProUGUI savingsBtnText;
 
-    [Header("--- Í≤åÏûÑ Îç∞Ïù¥ÌÑ∞ ---")]
+    [Header("--- ∞‘¿” µ•¿Ã≈Õ ---")]
     public int currentMonth = 1;
     public long cash = 300000;
     public long savings = 0;
@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     public void OnClickNextMonth()
     {
-        if (currentMonth >= 10) { EndGame("ÏôÑÎ£å"); return; }
+        if (currentMonth >= 10) { EndGame("øœ∑·"); return; }
 
         int currentSalary = BASE_SALARY + ((jobLevel - 1) * 100000);
 
@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
         stress += 20;
         if (stress > 100) stress = 100;
 
-        // --- Î™ÖÏÑ∏ÏÑú UI Í∞í ÎÑ£Í∏∞ ---
+        // --- ∏Ìººº≠ UI ---
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
         if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
         if (txtReportHealth) txtReportHealth.text = $"-{health:N0}";
@@ -196,9 +196,9 @@ public class GameManager : MonoBehaviour
 
         if (txtReportSavings)
         {
-            if (!isSavingsJoined) txtReportSavings.text = "ÎØ∏Í∞ÄÏûÖ";
+            if (!isSavingsJoined) txtReportSavings.text = "πÃ∞°¿‘";
             else if (isSavingsSuccess) txtReportSavings.text = $"-{MONTHLY_SAVINGS_AMOUNT:N0}";
-            else txtReportSavings.text = "ÏûîÏï° Î∂ÄÏ°±";
+            else txtReportSavings.text = "¿‹æ◊ ∫Œ¡∑";
         }
 
         if (txtReportS_Interest) txtReportS_Interest.text = $"+{interest:N0}";
@@ -210,17 +210,19 @@ public class GameManager : MonoBehaviour
 
         currentMonth++;
 
-        if (stress >= 100) EndGame("Ïä§Ìä∏Î†àÏä§");
-        else if (cash < 0) EndGame("ÌååÏÇ∞");
+        if (stress >= 100) EndGame("Ω∫∆Æ∑πΩ∫");
+        else if (cash < 0) EndGame("∆ƒªÍ");
 
         UpdateUI();
     }
 
+    // --- πˆ∆∞ æ◊º«µÈ (ºˆ¡§µ : ∆–≥Œ ¥›±‚ ƒ⁄µÂ ªË¡¶) ---
     public void ActionBorrow()
     {
         if (loan >= 2000000) return;
         loan += 500000; cash += 500000;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // ªË¡¶µ : ¿Ã¡¶ √¢¿Ã æ» ¥›»˚
     }
 
     public void ActionRepay()
@@ -228,36 +230,42 @@ public class GameManager : MonoBehaviour
         if (loan <= 0) return;
         if (cash < 500000) return;
         loan -= 500000; cash -= 500000;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // ªË¡¶µ 
     }
 
     public void ActionJoinSavings()
     {
         if (isSavingsJoined) return;
         isSavingsJoined = true;
-        UpdateUI(); bankPanel.SetActive(false);
+        UpdateUI();
+        // bankPanel.SetActive(false); // ªË¡¶µ 
     }
 
     public void ActionBuy()
     {
         if (cash < 50000) return;
         cash -= 50000; stress -= 30; if (stress < 0) stress = 0;
-        UpdateUI(); storePanel.SetActive(false);
+        UpdateUI();
+        // storePanel.SetActive(false); // ªË¡¶µ 
     }
 
     public void ActionStudy()
     {
         if (cash < 100000) return;
         cash -= 100000; jobLevel++; stress += 10; if (stress > 100) stress = 100;
-        UpdateUI(); academyPanel.SetActive(false);
+        UpdateUI();
+        // academyPanel.SetActive(false); // ªË¡¶µ 
     }
 
     public void ActionRest()
     {
         stress -= 10; if (stress < 0) stress = 0;
-        UpdateUI(); academyPanel.SetActive(false);
+        UpdateUI();
+        // academyPanel.SetActive(false); // ªË¡¶µ 
     }
 
+    // --- [¡ﬂø‰] X πˆ∆∞ø° ø¨∞·«“ «‘ºˆ ---
     public void CloseAllPanels()
     {
         if (bankPanel) bankPanel.SetActive(false);
@@ -272,7 +280,7 @@ public class GameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        if (monthText) monthText.text = $"{currentMonth}Í∞úÏõîÏ∞®";
+        if (monthText) monthText.text = $"{currentMonth}∞≥ø˘¬˜";
         if (cashText) cashText.text = $"{cash:N0}";
         if (savingsText) savingsText.text = $"{savings:N0}";
         if (loanText) loanText.text = $"{loan:N0}";
@@ -286,33 +294,28 @@ public class GameManager : MonoBehaviour
         int curSal = BASE_SALARY + ((jobLevel - 1) * 100000);
         if (salaryText) salaryText.text = $"{curSal:N0}";
 
-        if (isSavingsJoined && savingsBtnText != null) savingsBtnText.text = "Í∞ÄÏûÖ ÏôÑÎ£å";
+        if (isSavingsJoined && savingsBtnText != null) savingsBtnText.text = "∞°¿‘ øœ∑·";
         if (isSavingsJoined && savingsJoinBtn != null) savingsJoinBtn.interactable = false;
     }
 
-    // --- [Ï§ëÏöî] Í≤åÏûÑ Ï¢ÖÎ£å Î∞è Ï†êÏàò ÌëúÏãú ---
     void EndGame(string type)
     {
         Time.timeScale = 0;
         CloseAllPanels();
 
-        // ÏµúÏ¢Ö Ï†êÏàò Í≥ÑÏÇ∞ (ÌòÑÍ∏à + Ï†ÅÍ∏à - ÎåÄÏ∂ú)
         long finalScore = cash + savings - loan;
 
-        if (type == "Ïä§Ìä∏Î†àÏä§")
+        if (type == "Ω∫∆Æ∑πΩ∫")
         {
             if (failStressPanel) failStressPanel.SetActive(true);
         }
-        else if (type == "ÌååÏÇ∞")
+        else if (type == "∆ƒªÍ")
         {
             if (failMoneyPanel) failMoneyPanel.SetActive(true);
         }
         else
         {
-            // ÏÑ±Í≥µÌñàÏùÑ ÎïåÎßå Ï†êÏàò ÌëúÏãú
             if (successPanel) successPanel.SetActive(true);
-
-            // Ï†êÏàò ÌÖçÏä§Ìä∏ Í∞±Ïã†
             if (txtResultScore != null)
             {
                 txtResultScore.text = $"TOTAL SCORE: {finalScore:N0}";
