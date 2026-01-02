@@ -1,42 +1,50 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    private static bool isGameStarted = false; // 처음 시작할때만 패널이 뜨게
+    private static bool isGameStarted = false;
 
     [Header("--- 시작 및 종료 패널 ---")]
-    public GameObject startPanel;          // 시작 화면 (Play 버튼 있는 패널)
-    public GameObject successPanel;        // 10개월 성공 종료 패널
-    public GameObject failMoneyPanel;      // 파산 종료 패널
-    public GameObject failStressPanel;     // 스트레스 종료 패널
+    public GameObject startPanel;
+    public GameObject successPanel;
+    public GameObject failMoneyPanel;
+    public GameObject failStressPanel;
 
     [Header("--- 상단 HUD UI (TMP) ---")]
-    public TextMeshProUGUI monthText;      // 1개월차
-    public TextMeshProUGUI cashText;       // 소지금
-    public TextMeshProUGUI savingsText;    // 적금액
-    public TextMeshProUGUI loanText;       // 대출금
-    public TextMeshProUGUI stressText;     // 스트레스
-    public TextMeshProUGUI salaryText;     // 현재 월급 표시
+    public TextMeshProUGUI monthText;
+    public TextMeshProUGUI cashText;
+    public TextMeshProUGUI savingsText;
+    public TextMeshProUGUI loanText;
+    public TextMeshProUGUI stressText;
+    public TextMeshProUGUI salaryText;
 
     [Header("--- 팝업 패널 리스트 ---")]
-    public GameObject bankPanel;           // 은행 창
-    public GameObject storePanel;          // 상점 창
-    public GameObject academyPanel;        // 학원 창
-    public GameObject reportPanel;         // [중요] 급여 명세서(보고서) 창
-    public GameObject resultPanel;        
-    public TextMeshProUGUI reportContent;  // 명세서 내용 텍스트
-    public TextMeshProUGUI resultTitle;    
-    public TextMeshProUGUI resultDesc;     
-    public GameObject msgPanel;            // 토스트 알림 창
-    public TextMeshProUGUI msgText;        
+    public GameObject bankPanel;
+    public GameObject storePanel;
+    public GameObject academyPanel;
+    public GameObject reportPanel;
+
+    [Header("--- 명세서 UI (각 항목별 연결) ---")]
+    public TextMeshProUGUI txtReportSalary;
+    public TextMeshProUGUI txtReportPension;
+    public TextMeshProUGUI txtReportHealth;
+    public TextMeshProUGUI txtReportTax;
+    public TextMeshProUGUI txtReportLoan;
+    public TextMeshProUGUI txtReportNetPay;
+    public TextMeshProUGUI txtReportLiving;
+    public TextMeshProUGUI txtReportSavings;
+    public TextMeshProUGUI txtReportS_Interest;
+    public TextMeshProUGUI txtReportFinal;
+
+    [Header("--- 결과 화면 점수 표시 (NEW) ---")]
+    public TextMeshProUGUI txtResultScore;  // 여기에 Total_Score를 연결하세요!
 
     [Header("--- 버튼 관련 ---")]
-    public Button savingsJoinBtn;          
+    public Button savingsJoinBtn;
     public TextMeshProUGUI savingsBtnText;
 
     [Header("--- 게임 데이터 ---")]
@@ -54,7 +62,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // 싱글톤 패턴: 씬 이동 시 GameManager가 파괴되지 않게 합니다.
         if (instance == null)
         {
             instance = this;
@@ -69,92 +76,80 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         CloseAllPanels();
-
         UpdateUI();
-        
+
         if (!isGameStarted)
         {
-            // 아직 한 번도 시작 버튼을 안 눌렀을 때 (최초 실행 시)
             Time.timeScale = 0;
             if (startPanel != null) startPanel.SetActive(true);
         }
         else
         {
-            // 이미 게임 중 씬만 이동한 경우
             Time.timeScale = 1;
             if (startPanel != null) startPanel.SetActive(false);
-            
-            if (failMoneyPanel != null) failMoneyPanel.SetActive(false);
-            if (failStressPanel != null) failStressPanel.SetActive(false);
-            if (successPanel != null) successPanel.SetActive(false);
+            if (failMoneyPanel) failMoneyPanel.SetActive(false);
+            if (failStressPanel) failStressPanel.SetActive(false);
+            if (successPanel) successPanel.SetActive(false);
         }
     }
 
-    // [Play] 버튼에 연결할 함수
     public void GameStart()
     {
         isGameStarted = true;
         Time.timeScale = 1;
         if (startPanel != null) startPanel.SetActive(false);
         UpdateUI();
-    } 
-
-    // [Exit] 버튼 등에 연결할 게임 종료 함수
-    public void GameExit()
-    {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
     }
 
-    // [Retry] 버튼 등에 연결할 재시작 함수
+    public void GameExit()
+    {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     public void GameRestart()
     {
-        isGameStarted = false; // 다시 처음부터 시작 패널이 뜨도록 초기화
+        isGameStarted = false;
         Time.timeScale = 1;
-        
-        // 돈과 데이터 초기화 (필요시)
+
         currentMonth = 1;
         cash = 300000;
         stress = 0;
-        
-        SceneManager.LoadScene("Main"); // 메인 씬 이름에 맞게 수정
+        savings = 0;
+        loan = 0;
+        jobLevel = 1;
+        isSavingsJoined = false;
+
+        SceneManager.LoadScene("MainScene");
     }
 
     public void OnCarAccident()
     {
-        // 교통사고 패널티: 50,000원 차감 (원하는 금액으로 수정 가능)
         int penalty = 50000;
-
-        // 현금이 부족하면 0까지만 차감
         if (cash >= penalty) cash -= penalty;
         else cash = 0;
 
-        // 스트레스 증가
         stress += 10;
         if (stress > 100) stress = 100;
 
-        ShowToast($"교통사고! 치료비 -{penalty:N0}원");
         UpdateUI();
     }
 
-    // [다음 달로] 버튼 클릭 시 호출
     public void OnClickNextMonth()
     {
         if (currentMonth >= 10) { EndGame("완료"); return; }
 
         int currentSalary = BASE_SALARY + ((jobLevel - 1) * 100000);
 
-        // 1. 공제액 계산
         int pension = (int)(currentSalary * 0.045f);
         int health = (int)(currentSalary * 0.035f);
         int tax = (int)(currentSalary * 0.03f);
         int totalDeduction = pension + health + tax;
         int netPay = currentSalary - totalDeduction;
 
-        // 2. 대출 이자 (2%)
         int loanInterest = 0;
         if (loan > 0)
         {
@@ -162,49 +157,56 @@ public class GameManager : MonoBehaviour
             netPay -= loanInterest;
         }
 
-        // 3. 적금 자동이체
-        string savingsMsg = "";
+        bool isSavingsSuccess = false;
         if (isSavingsJoined)
         {
             if (cash + netPay >= MONTHLY_SAVINGS_AMOUNT)
             {
                 savings += MONTHLY_SAVINGS_AMOUNT;
                 netPay -= MONTHLY_SAVINGS_AMOUNT;
-                savingsMsg = $"<color=blue>▶ 적금 이체: -{MONTHLY_SAVINGS_AMOUNT:N0}</color>\n";
+                isSavingsSuccess = true;
             }
-            else savingsMsg = $"<color=red>▶ 잔액부족 이체실패</color>\n";
         }
 
-        // 4. 적금 이자 수익 (0.5%)
         int interest = (int)(savings * 0.005f);
         savings += interest;
 
-        // 5. 최종 소지금 반영 (월급 추가 - 생활비 차감)
         cash += netPay;
         cash -= LIVING_COST;
 
-        // 6. 스트레스 증가
         stress += 20;
         if (stress > 100) stress = 100;
 
-        // 명세서 텍스트 구성 (Report_Panel 전용)
-        string report = $"<size=130%><b>[{currentMonth}월 급여 명세서]</b></size>\n\n" +
-                        $"기본 급여: +{currentSalary:N0}\n" +
-                        $"--------------------------------\n" +
-                        $"<color=red>국민연금: -{pension:N0}</color>\n" +
-                        $"<color=red>건강보험: -{health:N0}</color>\n" +
-                        $"<color=red>소득세: -{tax:N0}</color>\n" +
-                        (loan > 0 ? $"<color=red>대출이자: -{loanInterest:N0}</color>\n" : "") +
-                        $"--------------------------------\n" +
-                        $"<b>실수령액: {(currentSalary - totalDeduction - loanInterest):N0}</b>\n\n" +
-                        $"고정 생활비: -{LIVING_COST:N0}\n" +
-                        savingsMsg +
-                        $"적금 이자수익: +{interest:N0}\n" +
-                        $"--------------------------------\n" +
-                        $"<b>최종 잔액변화: {(netPay - LIVING_COST):N0}</b>";
+        // --- 명세서 UI 값 넣기 ---
+        if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
+        if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
+        if (txtReportHealth) txtReportHealth.text = $"-{health:N0}";
+        if (txtReportTax) txtReportTax.text = $"-{tax:N0}";
 
-        reportContent.text = report;
-        reportPanel.SetActive(true); // 스크린샷의 Report_Panel 활성화
+        if (txtReportLoan)
+        {
+            if (loan > 0) txtReportLoan.text = $"-{loanInterest:N0}";
+            else txtReportLoan.text = "0";
+        }
+
+        int realMoney = currentSalary - totalDeduction - loanInterest;
+        if (txtReportNetPay) txtReportNetPay.text = $"{realMoney:N0}";
+
+        if (txtReportLiving) txtReportLiving.text = $"-{LIVING_COST:N0}";
+
+        if (txtReportSavings)
+        {
+            if (!isSavingsJoined) txtReportSavings.text = "미가입";
+            else if (isSavingsSuccess) txtReportSavings.text = $"-{MONTHLY_SAVINGS_AMOUNT:N0}";
+            else txtReportSavings.text = "잔액 부족";
+        }
+
+        if (txtReportS_Interest) txtReportS_Interest.text = $"+{interest:N0}";
+
+        int finalChange = netPay - LIVING_COST;
+        if (txtReportFinal) txtReportFinal.text = $"{finalChange:N0}";
+
+        if (reportPanel) reportPanel.SetActive(true);
 
         currentMonth++;
 
@@ -214,97 +216,107 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
-    // --- 액션 함수들 ---
-    public void ActionBorrow() {
-        if (loan >= 2000000) { ShowToast("대출 한도 초과!"); return; }
+    public void ActionBorrow()
+    {
+        if (loan >= 2000000) return;
         loan += 500000; cash += 500000;
-        UpdateUI(); ShowToast("50만원 대출 완료"); bankPanel.SetActive(false);
+        UpdateUI(); bankPanel.SetActive(false);
     }
 
-    public void ActionRepay() {
-        if (loan <= 0) { ShowToast("상환할 대출이 없습니다."); return; }
-        if (cash < 500000) { ShowToast("잔액이 부족합니다."); return; }
+    public void ActionRepay()
+    {
+        if (loan <= 0) return;
+        if (cash < 500000) return;
         loan -= 500000; cash -= 500000;
-        UpdateUI(); ShowToast("50만원 상환 완료"); bankPanel.SetActive(false);
+        UpdateUI(); bankPanel.SetActive(false);
     }
 
-    public void ActionJoinSavings() {
+    public void ActionJoinSavings()
+    {
         if (isSavingsJoined) return;
         isSavingsJoined = true;
-        UpdateUI(); ShowToast("적금 가입 완료!"); bankPanel.SetActive(false);
+        UpdateUI(); bankPanel.SetActive(false);
     }
 
-    public void ActionBuy() {
-        if (cash < 50000) { ShowToast("돈이 부족합니다."); return; }
+    public void ActionBuy()
+    {
+        if (cash < 50000) return;
         cash -= 50000; stress -= 30; if (stress < 0) stress = 0;
-        UpdateUI(); ShowToast("아이템 구매 완료!"); storePanel.SetActive(false);
+        UpdateUI(); storePanel.SetActive(false);
     }
 
-    public void ActionStudy() {
-        if (cash < 100000) { ShowToast("학원비가 부족합니다."); return; }
+    public void ActionStudy()
+    {
+        if (cash < 100000) return;
         cash -= 100000; jobLevel++; stress += 10; if (stress > 100) stress = 100;
-        UpdateUI(); ShowToast("직무 능력 향상!"); academyPanel.SetActive(false);
+        UpdateUI(); academyPanel.SetActive(false);
     }
 
-    public void ActionRest() {
+    public void ActionRest()
+    {
         stress -= 10; if (stress < 0) stress = 0;
-        UpdateUI(); ShowToast("휴식 완료"); academyPanel.SetActive(false);
+        UpdateUI(); academyPanel.SetActive(false);
     }
 
-    public void CloseAllPanels() {
+    public void CloseAllPanels()
+    {
         if (bankPanel) bankPanel.SetActive(false);
         if (storePanel) storePanel.SetActive(false);
         if (academyPanel) academyPanel.SetActive(false);
         if (reportPanel) reportPanel.SetActive(false);
-        if (resultPanel) resultPanel.SetActive(false);
-        if (msgPanel) msgPanel.SetActive(false);
 
-        // ---- 시작, 종료 패널들 ---- //
         if (successPanel) successPanel.SetActive(false);
         if (failMoneyPanel) failMoneyPanel.SetActive(false);
         if (failStressPanel) failStressPanel.SetActive(false);
     }
 
-    void UpdateUI() {
-        monthText.text = $"{currentMonth}개월차";
-        cashText.text = $"{cash:N0}";
-        savingsText.text = $"{savings:N0}";
-        loanText.text = $"{loan:N0}";
-        stressText.text = $"{stress}%";
-        stressText.color = stress > 80 ? Color.red : Color.white;
-        int curSal = BASE_SALARY + ((jobLevel - 1) * 100000);
-        salaryText.text = $"{curSal:N0}";
+    void UpdateUI()
+    {
+        if (monthText) monthText.text = $"{currentMonth}개월차";
+        if (cashText) cashText.text = $"{cash:N0}";
+        if (savingsText) savingsText.text = $"{savings:N0}";
+        if (loanText) loanText.text = $"{loan:N0}";
 
-        if (isSavingsJoined && savingsJoinBtn != null) {
-            savingsJoinBtn.interactable = false;
-            if (savingsBtnText != null) savingsBtnText.text = "가입 완료";
+        if (stressText)
+        {
+            stressText.text = $"{stress}%";
+            stressText.color = stress > 80 ? Color.red : Color.white;
         }
+
+        int curSal = BASE_SALARY + ((jobLevel - 1) * 100000);
+        if (salaryText) salaryText.text = $"{curSal:N0}";
+
+        if (isSavingsJoined && savingsBtnText != null) savingsBtnText.text = "가입 완료";
+        if (isSavingsJoined && savingsJoinBtn != null) savingsJoinBtn.interactable = false;
     }
 
-    void ShowToast(string msg) {
-        StopAllCoroutines();
-        StartCoroutine(ToastProcess(msg));
-    }
-
-    IEnumerator ToastProcess(string msg) {
-        msgPanel.SetActive(true);
-        msgText.text = msg;
-        yield return new WaitForSeconds(2f);
-        msgPanel.SetActive(false);
-    }
-
-    void EndGame(string type) {
-        Time.timeScale = 0; // 게임 시간 정지
+    // --- [중요] 게임 종료 및 점수 표시 ---
+    void EndGame(string type)
+    {
+        Time.timeScale = 0;
         CloseAllPanels();
 
-        if (type == "스트레스") {
-            if (failStressPanel != null) failStressPanel.SetActive(true);
+        // 최종 점수 계산 (현금 + 적금 - 대출)
+        long finalScore = cash + savings - loan;
+
+        if (type == "스트레스")
+        {
+            if (failStressPanel) failStressPanel.SetActive(true);
         }
-        else if (type == "파산") {
-            if (failMoneyPanel != null) failMoneyPanel.SetActive(true);
+        else if (type == "파산")
+        {
+            if (failMoneyPanel) failMoneyPanel.SetActive(true);
         }
-        else {
-            if (successPanel != null) successPanel.SetActive(true);
+        else
+        {
+            // 성공했을 때만 점수 표시
+            if (successPanel) successPanel.SetActive(true);
+
+            // 점수 텍스트 갱신
+            if (txtResultScore != null)
+            {
+                txtResultScore.text = $"TOTAL SCORE: {finalScore:N0}";
+            }
         }
     }
 }
