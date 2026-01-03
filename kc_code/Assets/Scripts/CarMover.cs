@@ -1,59 +1,92 @@
 using UnityEngine;
+using System.Collections;
 
 public class CarMover : MonoBehaviour
 {
-    [Header("�̵� ����")]
-    public Transform startPoint; // ��� ����
-    public Transform endPoint;   // ���� ����
-    public float speed = 5f;     // �̵� �ӵ�
+    [Header("--- 이동 설정 ---")]
+    public Transform spawnPoint; // 시작 위치
+    public Transform endPoint;   // 목적지
+    public float speed = 5f;     // 이동 속도
 
-    [Header("�ִϸ��̼� ����")]
-    public bool isHorizontalCar = false; // ���η� �����̴� ���ΰ�? (üũ�ϸ� ���Ʒ��� �սǰŸ�)
-    public float bobSpeed = 10f;  // �սǰŸ��� �ӵ�
-    public float bobAmount = 0.05f; // �սǰŸ��� ����
+    [Header("--- 애니메이션 (움직이는 느낌) ---")]
+    public bool isHorizontalCar = false; 
+    public float bobSpeed = 10f;         
+    public float bobAmount = 0.05f;      
 
-    [Header("�浹 ����")]
-    public int damageCooldown = 2; // ���� �浹 ���� �ð� (��)
+    [Header("--- 리스폰 설정 (시간) ---")]
+    public float minRespawnTime = 5f;       // 도착 후 재등장까지 최소 시간
+    public float maxRespawnTime = 8f;       // 도착 후 재등장까지 최대 시간
 
+    [Header("--- 플레이어 충돌 설정 ---")]
+    public int damageCooldown = 2; 
     private float _canDamageTime = 0f;
+
+    private bool isActive = true;          
+    private SpriteRenderer spriteRenderer;  
+
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
-        transform.position = startPoint.position;
+        SpawnCar();
     }
 
     void Update()
     {
-        // 1. �ϴ� ������ ������ X�ุ �̵��Ѵٰ� ���� (�⺻ �̵�)
+        if (!isActive) return;
+
+        // 1. 목적지를 향해 이동
         transform.position = Vector3.MoveTowards(transform.position, endPoint.position, speed * Time.deltaTime);
 
-        // 2. ���� ���� ����� -> Y��(����)�� ������ ������(Sin)�� �����
+        // 2. 엔진 진동/움직이는 느낌
         if (isHorizontalCar)
         {
-            // ���� ����(startPoint.y)�� �������� ���Ʒ��� ��鸲
-            float newY = startPoint.position.y + Mathf.Sin(Time.time * bobSpeed) * bobAmount;
-
-            // ���� X, Z�� �����ϰ� Y�� ��ü
+            float newY = spawnPoint.position.y + Mathf.Sin(Time.time * bobSpeed) * bobAmount;
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
         }
 
-        // 3. ���� üũ �� ����
+        // 3. 목적지에 도착했는지 확인 (가장 중요한 부분)
         if (Vector3.Distance(transform.position, endPoint.position) < 0.1f)
         {
-            transform.position = startPoint.position;
+            // 부딪히길 기다리지 않고, 목적지 도착 시 바로 리스폰 코루틴 실행
+            StartCoroutine(RespawnTimer());
         }
     }
 
-    // �÷��̾�� �浹 ó��
+    void SpawnCar()
+    {
+        if (spawnPoint == null) return;
+        
+        transform.position = spawnPoint.position;
+        isActive = true;
+        if (spriteRenderer != null) spriteRenderer.enabled = true;
+    }
+
+    IEnumerator RespawnTimer()
+    {
+        // 도착하는 순간 호출됨
+        isActive = false; // 이동 멈춤
+        if (spriteRenderer != null) spriteRenderer.enabled = false; // 차 숨기기
+
+        // 설정한 랜덤 시간만큼 대기
+        float waitTime = Random.Range(minRespawnTime, maxRespawnTime);
+        yield return new WaitForSeconds(waitTime);
+
+        // 대기 후 시작점에서 다시 생성
+        SpawnCar();
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        // ��Ÿ���� ������, �浹�� ����� �÷��̾���
+        // 플레이어와 부딪혔을 때 데미지 주는 로직은 유지
         if (other.CompareTag("Player") && Time.time >= _canDamageTime)
         {
-            _canDamageTime = Time.time + damageCooldown; // ��Ÿ�� ����
-            GameManager.instance.OnCarAccident(); // �� ���
+            _canDamageTime = Time.time + damageCooldown;
+            if (GameManager.instance != null)
+                GameManager.instance.OnCarAccident();
         }
     }
-
-
 }
