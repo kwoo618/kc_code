@@ -472,7 +472,7 @@ public class GameManager : MonoBehaviour
 
         if (isSavingsJoined)
         {
-            if (savingsBtnText) savingsBtnText.text = "가입 완료";
+            if (savingsBtnText) savingsBtnText.text = "가입 완료"; //s
             if (savingsJoinBtn) savingsJoinBtn.interactable = false;
         }
     }
