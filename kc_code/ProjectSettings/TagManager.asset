@@ -7,6 +7,11 @@ TagManager:
   - Bank
   - Store
   - Academy
+  - Home_BGM
+  - Bank_BGM
+  - Academy_BGM
+  - Door
+  - NextTurn
   layers:
   - Default
   - TransparentFX

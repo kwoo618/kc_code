@@ -640,7 +640,7 @@ GameObject:
   - component: {fileID: 35363397}
   m_Layer: 0
   m_Name: NextTurnUI
-  m_TagString: Untagged
+  m_TagString: NextTurn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -690,7 +690,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.052003473, y: -0.65860057}
+  m_Offset: {x: -0.052003503, y: -0.44643998}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -701,7 +701,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.104007, y: 2.3172016}
+  m_Size: {x: 1.104007, y: 1.8928788}
   m_EdgeRadius: 0
 --- !u!212 &35363399
 SpriteRenderer:
@@ -1160,6 +1160,7 @@ Transform:
   - {fileID: 1539220020}
   - {fileID: 507081067}
   - {fileID: 1993692627}
+  - {fileID: 1281341437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &57314997
@@ -2069,7 +2070,7 @@ GameObject:
   - component: {fileID: 124591767}
   m_Layer: 0
   m_Name: CompanyMove
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2805,6 +2806,7 @@ Transform:
   m_Children:
   - {fileID: 2016577401}
   - {fileID: 1354439670}
+  - {fileID: 1345565989}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &198877699
@@ -2872,7 +2874,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.039134026, y: 0.81331253}
+  m_Offset: {x: 0.1323967, y: 0.5749779}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2883,7 +2885,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.7307796, y: 4.020851}
+  m_Size: {x: 4.590904, y: 3.0467758}
   m_EdgeRadius: 0
 --- !u!212 &198877702
 SpriteRenderer:
@@ -58830,14 +58832,14 @@ MonoBehaviour:
   cash: 300000
   savings: 0
   loan: 0
-  stress: 0
+  stress: 80
   jobLevel: 1
   baseSalary: 2000000
   maxJobLevel: 10
   salaryIncreasePerLevel: 200000
   studyCost: 150000
   promotionCost: 1000000
-  convenienceCost: 50000
+  convenienceCost: 100000
 --- !u!4 &381450271
 Transform:
   m_ObjectHideFlags: 0
@@ -60000,7 +60002,7 @@ GameObject:
   - component: {fileID: 476372821}
   m_Layer: 0
   m_Name: Company_Main
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71577,21 +71579,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfddd50885f08e4db80f18f313c6b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmSource: {fileID: 0}
-  sfxSource: {fileID: 0}
-  titleBgm: {fileID: 0}
-  mainBgm: {fileID: 0}
-  bankBgm: {fileID: 0}
-  academyBgm: {fileID: 0}
-  homeBgm: {fileID: 0}
-  clickSfx: {fileID: 0}
-  nextMonthSfx: {fileID: 0}
-  eatSfx: {fileID: 0}
-  crashSfx: {fileID: 0}
-  doorSfx: {fileID: 0}
-  successBgm: {fileID: 0}
-  failMoneyBgm: {fileID: 0}
-  failStressBgm: {fileID: 0}
+  bgmSource: {fileID: 841411224}
+  sfxSource: {fileID: 841411224}
+  titleBgm: {fileID: 8300000, guid: 2e2c5638bd808a9409f83880b2b34554, type: 3}
+  mainBgm: {fileID: 8300000, guid: 0ea707d57613f284280a0c583992e5f2, type: 3}
+  bankBgm: {fileID: 8300000, guid: 90954d6c06279da41aa1a4cc4463db83, type: 3}
+  academyBgm: {fileID: 8300000, guid: edd8b6879058e78489c7c765df60ce71, type: 3}
+  homeBgm: {fileID: 8300000, guid: 9682af873f906e748a79f94ba6dc690c, type: 3}
+  clickSfx: {fileID: 8300000, guid: d041ec44bbec11f4ea8c4425215b9ff8, type: 3}
+  nextMonthSfx: {fileID: 8300000, guid: 267c1a4c3fb7f5d479bbfdd6b57b6ca9, type: 3}
+  eatSfx: {fileID: 8300000, guid: adb5c8359608fbd4187f15a481a96128, type: 3}
+  crashSfx: {fileID: 8300000, guid: aa9b6612638413c4b8d2ae52b92ca37e, type: 3}
+  doorSfx: {fileID: 8300000, guid: a36e999a65e7e814a800f3e0a8b938fe, type: 3}
+  alertSfx: {fileID: 8300000, guid: c5c80e7359ec0214b9d4308e93d67953, type: 3}
+  successBgm: {fileID: 8300000, guid: 06f4f0649804d54448fb18ef979b7229, type: 3}
+  failMoneyBgm: {fileID: 8300000, guid: 5cacd2ccd3b212847a4a1cfcbc04ca78, type: 3}
+  failStressBgm: {fileID: 8300000, guid: bc9f4d293f8c9a241ad40157c937a638, type: 3}
 --- !u!82 &841411223
 AudioSource:
   m_ObjectHideFlags: 0
@@ -110473,7 +110476,7 @@ GameObject:
   - component: {fileID: 924216946}
   m_Layer: 0
   m_Name: BankMove
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175736,7 +175739,7 @@ GameObject:
   - component: {fileID: 1136908134}
   m_Layer: 0
   m_Name: HomeMove
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178483,6 +178486,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277693223}
   m_CullTransparentMesh: 1
+--- !u!1 &1281341436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1281341437}
+  - component: {fileID: 1281341438}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Bank_BGM
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1281341437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281341436}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 203.1, y: 27.100002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 49525053}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1281341438
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281341436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -205.23785, y: -53.37989}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 17.911377, y: 21.710587}
+  m_EdgeRadius: 0
 --- !u!1 &1287677663
 GameObject:
   m_ObjectHideFlags: 0
@@ -179288,6 +179368,83 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1345565988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1345565989}
+  - component: {fileID: 1345565990}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Academy_BGM
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1345565989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345565988}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 127.70001, y: 45.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 197881326}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1345565990
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345565988}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -121.9805, y: -84.142944}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 49.021706, y: 39.481964}
+  m_EdgeRadius: 0
 --- !u!1 &1348197830
 GameObject:
   m_ObjectHideFlags: 0
@@ -179301,7 +179458,7 @@ GameObject:
   - component: {fileID: 1348197831}
   m_Layer: 0
   m_Name: Bank_Main
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180077,9 +180234,9 @@ PolygonCollider2D:
       - {x: -9.725505, y: -27.511251}
       - {x: -8.101619, y: -27.259636}
       - {x: -9.025033, y: -28.091192}
-      - {x: -8.99766, y: -29.31906}
+      - {x: -8.99766, y: -29.294058}
       - {x: -7.1360245, y: -29.222603}
-      - {x: -7.0381885, y: -29.269817}
+      - {x: -7.0131907, y: -29.19482}
       - {x: -7.0185704, y: -28.21264}
       - {x: -3.7557092, y: -28.16205}
       - {x: -1.9235897, y: -28.31549}
@@ -180087,9 +180244,11 @@ PolygonCollider2D:
       - {x: -0.113622665, y: -29.099709}
       - {x: -0.101662636, y: -28.015793}
       - {x: 5.0555105, y: -28.039175}
-      - {x: 5.064846, y: -29.379616}
-      - {x: 5.0648465, y: -29.222805}
-      - {x: 6.068416, y: -29.358177}
+      - {x: 5.031204, y: -29.09365}
+      - {x: 5.0143814, y: -29.009544}
+      - {x: 4.9975605, y: -29.232254}
+      - {x: 5.109011, y: -29.239819}
+      - {x: 6.045112, y: -29.227646}
       - {x: 6.0210996, y: -41.96467}
       - {x: 6.966459, y: -41.94539}
       - {x: 6.9948688, y: -41.98438}
@@ -184137,7 +184296,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.7528038, y: -0.5863304}
+  m_Offset: {x: -0.80626297, y: -0.5239639}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -184148,7 +184307,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.959358, y: 4.004326}
+  m_Size: {x: 5.64077, y: 3.879593}
   m_EdgeRadius: 0
 --- !u!212 &1394518394
 SpriteRenderer:
@@ -185764,7 +185923,7 @@ GameObject:
   - component: {fileID: 1523584660}
   m_Layer: 0
   m_Name: Home_Main
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185814,7 +185973,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.61837006, y: 4.0834618}
+  m_Offset: {x: -0.61837006, y: 4.4254227}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -185825,7 +185984,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.164673, y: 1.1796856}
+  m_Size: {x: 7.164673, y: 0.23692322}
   m_EdgeRadius: 0
 --- !u!4 &1523584662
 Transform:
@@ -230796,6 +230955,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763498026}
   m_CullTransparentMesh: 1
+--- !u!1 &1764945897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1764945898}
+  - component: {fileID: 1764945899}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Home_BGM
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1764945898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764945897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2112474682}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1764945899
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764945897}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.0804176, y: -36.011925}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 56.771736, y: 32.41327}
+  m_EdgeRadius: 0
 --- !u!1 &1767981614
 GameObject:
   m_ObjectHideFlags: 0
@@ -344547,6 +344783,7 @@ Transform:
   m_Children:
   - {fileID: 305808827}
   - {fileID: 2018420245}
+  - {fileID: 1764945898}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2121833545

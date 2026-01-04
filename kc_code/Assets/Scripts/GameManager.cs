@@ -118,14 +118,18 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             if (startPanel) startPanel.SetActive(true);
 
-            if (SoundManager.instance) SoundManager.instance.PlayBGM(SoundManager.instance.titleBgm);
+            // [수정] 타이틀 BGM 재생
+            if (SoundManager.instance != null)
+            {
+                SoundManager.instance.PlayBGM(SoundManager.instance.titleBgm);
+            }
         }
         else
         {
             Time.timeScale = 1;
             if (startPanel) startPanel.SetActive(false);
 
-            if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
+            if (SoundManager.instance) SoundManager.instance.PlayHomeBGM();
         }
     }
 
@@ -137,7 +141,8 @@ public class GameManager : MonoBehaviour
         if (startPanel) startPanel.SetActive(false);
         UpdateUI();
 
-        if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
+        if (SoundManager.instance)
+            SoundManager.instance.PlayHomeBGM();
     }
 
     public void GameExit()

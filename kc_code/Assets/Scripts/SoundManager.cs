@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip eatSfx;         // 편의점 냠냠
     public AudioClip crashSfx;       // 교통사고 쾅!
     public AudioClip doorSfx;        // 건물 들어가고 나갈 때
+    public AudioClip alertSfx;        // 알림창 뜰때 소리 
 
     [Header("--- 결과 효과음 ---")]
     public AudioClip successBgm;     // 게임 클리어 (환호)
