@@ -9,15 +9,15 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private static bool isGameStarted = false;
 
-    public bool isGameOver = false; 
+    public bool isGameOver = false;
 
     [Header("--- 플레이어 설정 ---")]
-    public GameObject player; 
+    public GameObject player;
 
     [Header("--- 패널 연결 ---")]
     public GameObject startPanel;
     public GameObject successPanel;
-    public GameObject failMoneyPanel; 
+    public GameObject failMoneyPanel;
     public GameObject failStressPanel;
 
     public GameObject bankPanel;
@@ -27,11 +27,11 @@ public class GameManager : MonoBehaviour
     public GameObject nextPanel;
 
     [Header("--- 알림용 패널 ---")]
-    public GameObject alertPanel; 
-    public GameObject insufficientFundsPanel; 
-    public GameObject duplicateActionPanel;   
-    public GameObject highStressPanel; 
-    public GameObject lowStressPanel;  
+    public GameObject alertPanel;
+    public GameObject insufficientFundsPanel;
+    public GameObject duplicateActionPanel;
+    public GameObject highStressPanel;
+    public GameObject lowStressPanel;
     public GameObject accidentPanel;    // 교통사고 전용 패널
 
     [Header("--- 효과 및 연출 ---")]
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI loanText;
     public TextMeshProUGUI stressText;
     public TextMeshProUGUI salaryText;
-    public TextMeshProUGUI jobLevelText; 
+    public TextMeshProUGUI jobLevelText;
 
     [Header("--- 명세서 텍스트 ---")]
     public TextMeshProUGUI txtReportSalary;
@@ -79,8 +79,8 @@ public class GameManager : MonoBehaviour
     private const int LIVING_COST = 1000000;
     private bool isSavingsJoined = false;
 
-    private bool hasStudiedThisMonth = false;
-    private bool hasPromotedThisMonth = false;
+    // [수정] 강의와 실무를 통합 관리하는 변수
+    private bool hasSelfDevThisMonth = false;
 
     void Awake() { instance = this; }
 
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         isGameStarted = true;
-        isGameOver = false; 
+        isGameOver = false;
         Time.timeScale = 1;
         if (startPanel) startPanel.SetActive(false);
         UpdateUI();
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
     void ResetGameData()
     {
         Time.timeScale = 1;
-        isGameOver = false; 
+        isGameOver = false;
         currentMonth = 1;
         cash = 300000;
         stress = 0;
@@ -145,8 +145,9 @@ public class GameManager : MonoBehaviour
         jobLevel = 1;
         baseSalary = 2000000;
         isSavingsJoined = false;
-        hasStudiedThisMonth = false;
-        hasPromotedThisMonth = false;
+
+        // [수정] 통합 변수 초기화
+        hasSelfDevThisMonth = false;
     }
 
     public void OnClickNextMonth()
@@ -199,10 +200,10 @@ public class GameManager : MonoBehaviour
         savings += interest;
 
         cash += netPay;
-        cash -= LIVING_COST; 
-        stress += 60; 
+        cash -= LIVING_COST;
+        stress += 60;
 
-        UpdateUI(); 
+        UpdateUI();
 
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
         if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
@@ -247,8 +248,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
 
         currentMonth++;
-        hasStudiedThisMonth = false;
-        hasPromotedThisMonth = false;
+        // [수정] 다음 달로 넘어갈 때 통합 변수 초기화
+        hasSelfDevThisMonth = false;
 
         if (currentMonth > 10)
         {
@@ -297,14 +298,17 @@ public class GameManager : MonoBehaviour
     public void ActionPromotion()
     {
         if (isGameOver) return;
-        if (hasPromotedThisMonth) { ShowDuplicateActionPanel(); return; }
+        // [수정] 통합된 변수 체크
+        if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
         if (stress + 40 >= 100) { ShowHighStressPanel(); return; }
         if (cash < 500000) { ShowInsufficientFundsPanel(); return; }
 
-        cash -= 500000; baseSalary += 500000; jobLevel += 5; stress += 40;
-        hasPromotedThisMonth = true;
+        cash -= 500000; baseSalary += 250000; jobLevel += 5; stress += 40;
+
+        // [수정] 수행 표시
+        hasSelfDevThisMonth = true;
         CloseAllPanels(); UpdateUI();
-        
+
         if (alertPanel)
         {
             alertPanel.SetActive(true);
@@ -315,13 +319,16 @@ public class GameManager : MonoBehaviour
     public void ActionStudy()
     {
         if (isGameOver) return;
-        if (hasStudiedThisMonth) { ShowDuplicateActionPanel(); return; }
+        // [수정] 통합된 변수 체크
+        if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
         if (stress + 10 >= 100) { ShowHighStressPanel(); return; }
         if (cash < 100000) { ShowInsufficientFundsPanel(); return; }
 
-        cash -= 100000; jobLevel += 1; stress += 10;
-        hasStudiedThisMonth = true;
-        CloseAllPanels(); UpdateUI(); 
+        cash -= 100000; baseSalary += 50000; jobLevel += 1; stress += 10;
+
+        // [수정] 수행 표시
+        hasSelfDevThisMonth = true;
+        CloseAllPanels(); UpdateUI();
 
         if (alertPanel)
         {
@@ -332,12 +339,12 @@ public class GameManager : MonoBehaviour
 
     public void ActionBorrow() { if (isGameOver || loan >= 2000000) return; loan += 500000; cash += 500000; UpdateUI(); }
     public void ActionRepay() { if (isGameOver || loan <= 0) return; if (cash < 500000) { ShowInsufficientFundsPanel(); return; } loan -= 500000; cash -= 500000; UpdateUI(); }
-    
-    public void ActionJoinSavings() 
-    { 
-        if (isGameOver || isSavingsJoined) return; 
-        isSavingsJoined = true; 
-        UpdateUI(); 
+
+    public void ActionJoinSavings()
+    {
+        if (isGameOver || isSavingsJoined) return;
+        isSavingsJoined = true;
+        UpdateUI();
 
         if (alertPanel)
         {
@@ -350,8 +357,18 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
         if (stress <= 0) { ShowLowStressPanel(); return; }
-        if (cash < 50000) { ShowInsufficientFundsPanel(); return; }
-        cash -= 50000; stress -= 30; if (stress < 0) stress = 0; UpdateUI();
+        if (cash < 100000) { ShowInsufficientFundsPanel(); return; }
+
+        cash -= 100000; stress -= 30; if (stress < 0) stress = 0;
+        CloseAllPanels(); // [수정] 기존 패널 정리
+        UpdateUI();
+
+        // [수정] 편의점 이용 완료 알림 추가
+        if (alertPanel)
+        {
+            alertPanel.SetActive(true);
+            if (txtAlertMsg) txtAlertMsg.text = "편의점 이용 완료!\n스트레스 -30";
+        }
     }
 
     public void ActionRest()
@@ -361,33 +378,28 @@ public class GameManager : MonoBehaviour
         stress -= 20; if (stress < 0) stress = 0; UpdateUI();
     }
 
-    // --- [수정] 교통사고 발생 시 호출 ---
     public void OnCarAccident()
     {
         if (isGameOver || (accidentPanel != null && accidentPanel.activeSelf)) return;
 
-        int penalty = 200000; 
-        
-        // 돈이 부족해도 일단 HUD 상에서 마이너스가 되도록 차감
+        int penalty = 200000;
+
         cash -= penalty;
         stress += 20; if (stress > 100) stress = 100;
 
-        UpdateUI(); // 변경된 수치(마이너스 금액 등)를 먼저 보여줌
+        UpdateUI();
 
-        // 즉시 게임오버 시키지 않고 사고 알림 패널을 먼저 띄움
         if (accidentPanel)
         {
             accidentPanel.SetActive(true);
-            Time.timeScale = 0; 
+            Time.timeScale = 0;
         }
     }
 
-    // --- [수정] 사고 패널 확인 버튼 연결용 함수 ---
     public void OnConfirmAccident()
     {
         if (accidentPanel) accidentPanel.SetActive(false);
 
-        // [핵심 추가] 사고 패널 확인을 누른 시점에 파산 혹은 스트레스 체크
         if (cash < 0)
         {
             EndGame("파산");
@@ -400,7 +412,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 상태가 정상이면 리스폰 시퀀스 시작
         StopAllCoroutines();
         StartCoroutine(CarAccidentSequence());
     }
@@ -419,12 +430,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 지정 좌표로 이동
         if (player != null) player.transform.position = new Vector3(98.8f, -65.56f, 0);
 
         currentMonth++;
-        hasStudiedThisMonth = false;
-        hasPromotedThisMonth = false;
+        // [수정] 사고로 인해 달이 넘어가도 통합 변수 초기화
+        hasSelfDevThisMonth = false;
 
         if (currentMonth > 10) { EndGame("완료"); yield break; }
 
@@ -453,7 +463,7 @@ public class GameManager : MonoBehaviour
         if (reportPanel) reportPanel.SetActive(false);
         if (nextPanel) nextPanel.SetActive(false);
         if (alertPanel) alertPanel.SetActive(false);
-        if (insufficientFundsPanel) insufficientFundsPanel.SetActive(false); 
+        if (insufficientFundsPanel) insufficientFundsPanel.SetActive(false);
         if (duplicateActionPanel) duplicateActionPanel.SetActive(false);
         if (highStressPanel) highStressPanel.SetActive(false);
         if (lowStressPanel) lowStressPanel.SetActive(false);
@@ -472,14 +482,14 @@ public class GameManager : MonoBehaviour
 
         if (isSavingsJoined)
         {
-            if (savingsBtnText) savingsBtnText.text = "가입 완료"; //s
+            if (savingsBtnText) savingsBtnText.text = "가입 완료";
             if (savingsJoinBtn) savingsJoinBtn.interactable = false;
         }
     }
 
     void EndGame(string type)
     {
-        isGameOver = true; 
+        isGameOver = true;
         Time.timeScale = 0;
         if (fadeImage != null) { fadeImage.color = new Color(0, 0, 0, 0); fadeImage.gameObject.SetActive(false); }
         CloseAllPanels();
