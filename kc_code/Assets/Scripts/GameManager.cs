@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
     public Button savingsJoinBtn;
     public TextMeshProUGUI savingsBtnText;
 
-    [Header("--- 게임 데이터 ---")]
+    [Header("--- 게임 데이터 및 밸런스 ---")]
     public int currentMonth = 1;
     public long cash = 300000;
     public long savings = 0;
@@ -75,11 +75,20 @@ public class GameManager : MonoBehaviour
     public int jobLevel = 1;
     public int baseSalary = 2000000;
 
+    // [밸런스] 수치 조정 영역
     private const int MONTHLY_SAVINGS_AMOUNT = 500000;
     private const int LIVING_COST = 1000000;
-    private bool isSavingsJoined = false;
 
-    // [수정] 강의와 실무를 통합 관리하는 변수
+    // [추가] 밸런스 변수
+    public int maxJobLevel = 10;                // 최대 레벨 제한
+    public int salaryIncreasePerLevel = 200000; // 레벨당 월급 인상액
+
+    // [추가] 행동 비용
+    public int studyCost = 150000;              // 강의 비용
+    public int promotionCost = 1000000;         // 실무 비용
+    public int convenienceCost = 100000;         // 편의점 비용
+
+    private bool isSavingsJoined = false;
     private bool hasSelfDevThisMonth = false;
 
     void Awake() { instance = this; }
@@ -93,11 +102,17 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0;
             if (startPanel) startPanel.SetActive(true);
+
+            // [Sound] 타이틀 화면 배경음
+            if (SoundManager.instance) SoundManager.instance.PlayBGM(SoundManager.instance.titleBgm);
         }
         else
         {
             Time.timeScale = 1;
             if (startPanel) startPanel.SetActive(false);
+
+            // [Sound] 게임 중 거리 배경음
+            if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
         }
     }
 
@@ -108,6 +123,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         if (startPanel) startPanel.SetActive(false);
         UpdateUI();
+
+        // [Sound] 게임 시작 -> 거리 배경음 재생
+        if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
     }
 
     public void GameExit()
@@ -145,8 +163,6 @@ public class GameManager : MonoBehaviour
         jobLevel = 1;
         baseSalary = 2000000;
         isSavingsJoined = false;
-
-        // [수정] 통합 변수 초기화
         hasSelfDevThisMonth = false;
     }
 
@@ -154,7 +170,10 @@ public class GameManager : MonoBehaviour
     {
         if (currentMonth > 10 || isGameOver) return;
 
-        if (stress + 60 >= 100)
+        // [Sound] 버튼 클릭음 (다음달 넘기기)
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.nextMonthSfx);
+
+        if (stress + 40 >= 100)
         {
             ShowHighStressPanel();
             return;
@@ -201,7 +220,7 @@ public class GameManager : MonoBehaviour
 
         cash += netPay;
         cash -= LIVING_COST;
-        stress += 60;
+        stress += 40; // [밸런스]
 
         UpdateUI();
 
@@ -226,6 +245,9 @@ public class GameManager : MonoBehaviour
 
     public void OnConfirmReport()
     {
+        // [Sound] 확인 버튼 클릭음 (일반 클릭음)
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (reportPanel) reportPanel.SetActive(false);
         StartCoroutine(FadeSequence());
     }
@@ -248,7 +270,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
 
         currentMonth++;
-        // [수정] 다음 달로 넘어갈 때 통합 변수 초기화
         hasSelfDevThisMonth = false;
 
         if (currentMonth > 10)
@@ -298,35 +319,71 @@ public class GameManager : MonoBehaviour
     public void ActionPromotion()
     {
         if (isGameOver) return;
-        // [수정] 통합된 변수 체크
+
+        // [Sound] 버튼 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
+
+        if (jobLevel >= maxJobLevel)
+        {
+            if (alertPanel)
+            {
+                alertPanel.SetActive(true);
+                if (txtAlertMsg) txtAlertMsg.text = "이미 최고 직무 레벨입니다.";
+            }
+            return;
+        }
+
         if (stress + 40 >= 100) { ShowHighStressPanel(); return; }
-        if (cash < 500000) { ShowInsufficientFundsPanel(); return; }
+        if (cash < promotionCost) { ShowInsufficientFundsPanel(); return; }
 
-        cash -= 500000; baseSalary += 250000; jobLevel += 5; stress += 40;
+        cash -= promotionCost;
 
-        // [수정] 수행 표시
+        int levelGain = 3;
+        if (jobLevel + levelGain > maxJobLevel) levelGain = maxJobLevel - jobLevel;
+
+        jobLevel += levelGain;
+        baseSalary += (salaryIncreasePerLevel * levelGain);
+        stress += 40;
+
         hasSelfDevThisMonth = true;
         CloseAllPanels(); UpdateUI();
 
         if (alertPanel)
         {
             alertPanel.SetActive(true);
-            if (txtAlertMsg) txtAlertMsg.text = "실무 참여 완료!\n직무 레벨 +5";
+            if (txtAlertMsg) txtAlertMsg.text = $"실무 참여 완료!\n직무 레벨 +{levelGain}\n월급이 대폭 인상되었습니다.";
         }
     }
 
     public void ActionStudy()
     {
         if (isGameOver) return;
-        // [수정] 통합된 변수 체크
+
+        // [Sound] 버튼 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
+
+        if (jobLevel >= maxJobLevel)
+        {
+            if (alertPanel)
+            {
+                alertPanel.SetActive(true);
+                if (txtAlertMsg) txtAlertMsg.text = "이미 최고 직무 레벨입니다.";
+            }
+            return;
+        }
+
         if (stress + 10 >= 100) { ShowHighStressPanel(); return; }
-        if (cash < 100000) { ShowInsufficientFundsPanel(); return; }
+        if (cash < studyCost) { ShowInsufficientFundsPanel(); return; }
 
-        cash -= 100000; baseSalary += 50000; jobLevel += 1; stress += 10;
+        cash -= studyCost;
+        jobLevel += 1;
+        baseSalary += salaryIncreasePerLevel;
+        stress += 10;
 
-        // [수정] 수행 표시
         hasSelfDevThisMonth = true;
         CloseAllPanels(); UpdateUI();
 
@@ -337,11 +394,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ActionBorrow() { if (isGameOver || loan >= 2000000) return; loan += 500000; cash += 500000; UpdateUI(); }
-    public void ActionRepay() { if (isGameOver || loan <= 0) return; if (cash < 500000) { ShowInsufficientFundsPanel(); return; } loan -= 500000; cash -= 500000; UpdateUI(); }
+    public void ActionBorrow()
+    {
+        // [Sound] 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+        if (isGameOver || loan >= 2000000) return; loan += 500000; cash += 500000; UpdateUI();
+    }
+
+    public void ActionRepay()
+    {
+        // [Sound] 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+        if (isGameOver || loan <= 0) return; if (cash < 500000) { ShowInsufficientFundsPanel(); return; }
+        loan -= 500000; cash -= 500000; UpdateUI();
+    }
 
     public void ActionJoinSavings()
     {
+        // [Sound] 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (isGameOver || isSavingsJoined) return;
         isSavingsJoined = true;
         UpdateUI();
@@ -349,7 +421,7 @@ public class GameManager : MonoBehaviour
         if (alertPanel)
         {
             alertPanel.SetActive(true);
-            if (txtAlertMsg) txtAlertMsg.text = "정기적금 가입 완료!\n매달 500,000원이 저축됩니다.";
+            if (txtAlertMsg) txtAlertMsg.text = "정기적금 가입 완료!\n매달 500,000원이 저축됩니다.\n(게임 종료시 이자포함 지급)";
         }
     }
 
@@ -357,23 +429,33 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
         if (stress <= 0) { ShowLowStressPanel(); return; }
-        if (cash < 100000) { ShowInsufficientFundsPanel(); return; }
 
-        cash -= 100000; stress -= 30; if (stress < 0) stress = 0;
-        CloseAllPanels(); // [수정] 기존 패널 정리
+        if (cash < convenienceCost) { ShowInsufficientFundsPanel(); return; }
+
+        cash -= convenienceCost;
+        stress -= 30;
+        if (stress < 0) stress = 0;
+
+        CloseAllPanels();
         UpdateUI();
 
-        // [수정] 편의점 이용 완료 알림 추가
+        // [Sound] 편의점 먹는 소리 (냠냠)
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.eatSfx);
+
         if (alertPanel)
         {
             alertPanel.SetActive(true);
-            if (txtAlertMsg) txtAlertMsg.text = "편의점 이용 완료!\n스트레스 -30";
+            if (txtAlertMsg) txtAlertMsg.text = "스트레스 -30";
         }
     }
 
     public void ActionRest()
     {
         if (isGameOver) return;
+
+        // [Sound] 휴식 효과음 (그냥 클릭음 사용)
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (stress <= 0) { ShowLowStressPanel(); return; }
         stress -= 20; if (stress < 0) stress = 0; UpdateUI();
     }
@@ -389,6 +471,9 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
+        // [Sound] 쾅! 교통사고 소리
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.crashSfx);
+
         if (accidentPanel)
         {
             accidentPanel.SetActive(true);
@@ -398,6 +483,9 @@ public class GameManager : MonoBehaviour
 
     public void OnConfirmAccident()
     {
+        // [Sound] 확인 버튼 클릭음
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
         if (accidentPanel) accidentPanel.SetActive(false);
 
         if (cash < 0)
@@ -433,7 +521,6 @@ public class GameManager : MonoBehaviour
         if (player != null) player.transform.position = new Vector3(98.8f, -65.56f, 0);
 
         currentMonth++;
-        // [수정] 사고로 인해 달이 넘어가도 통합 변수 초기화
         hasSelfDevThisMonth = false;
 
         if (currentMonth > 10) { EndGame("완료"); yield break; }
@@ -494,8 +581,27 @@ public class GameManager : MonoBehaviour
         if (fadeImage != null) { fadeImage.color = new Color(0, 0, 0, 0); fadeImage.gameObject.SetActive(false); }
         CloseAllPanels();
 
-        if (type == "스트레스") failStressPanel.SetActive(true);
-        else if (type == "파산") { UpdateUI(); failMoneyPanel.SetActive(true); }
-        else { successPanel.SetActive(true); if (txtResultScore != null) txtResultScore.text = $" {(cash + savings - loan):N0}"; }
+        // [Sound] 배경음 끄고 결과 효과음 재생
+        if (SoundManager.instance)
+        {
+            SoundManager.instance.StopBGM();
+
+            if (type == "스트레스")
+            {
+                failStressPanel.SetActive(true);
+                SoundManager.instance.PlaySFX(SoundManager.instance.failStressBgm);
+            }
+            else if (type == "파산")
+            {
+                UpdateUI(); failMoneyPanel.SetActive(true);
+                SoundManager.instance.PlaySFX(SoundManager.instance.failMoneyBgm);
+            }
+            else
+            {
+                successPanel.SetActive(true);
+                SoundManager.instance.PlaySFX(SoundManager.instance.successBgm);
+                if (txtResultScore != null) txtResultScore.text = $" {(cash + savings - loan):N0}";
+            }
+        }
     }
 }
