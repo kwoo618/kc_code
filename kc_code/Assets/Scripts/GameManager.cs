@@ -32,10 +32,11 @@ public class GameManager : MonoBehaviour
     public GameObject duplicateActionPanel;
     public GameObject highStressPanel;
     public GameObject lowStressPanel;
-    public GameObject accidentPanel;    // 교통사고 전용 패널
+    public GameObject accidentPanel;
 
     [Header("--- 효과 및 연출 ---")]
     public Image fadeImage;
+    public TextMeshProUGUI tipText;
 
     [Header("--- 상단 HUD ---")]
     public TextMeshProUGUI monthText;
@@ -80,16 +81,28 @@ public class GameManager : MonoBehaviour
     private const int LIVING_COST = 1000000;
 
     // [추가] 밸런스 변수
-    public int maxJobLevel = 10;                // 최대 레벨 제한
-    public int salaryIncreasePerLevel = 200000; // 레벨당 월급 인상액
+    public int maxJobLevel = 10;
+    public int salaryIncreasePerLevel = 200000;
 
     // [추가] 행동 비용
-    public int studyCost = 150000;              // 강의 비용
-    public int promotionCost = 1000000;         // 실무 비용
-    public int convenienceCost = 100000;         // 편의점 비용
+    public int studyCost = 150000;
+    public int promotionCost = 1000000;
+    public int convenienceCost = 100000;
 
     private bool isSavingsJoined = false;
     private bool hasSelfDevThisMonth = false;
+
+    // [수정] 게임 내 콘텐츠와 직접 관련된 팁으로 교체
+    private string[] financialFacts = new string[]
+    {
+        "[팁] 적금에 가입하면 만기 시 '원금 + 이자'를 받을 수 있어 목돈 마련에 유리합니다.",
+        "[팁] '복리'란 이자에 또 이자가 붙는 효과입니다. 게임에서도 저축액이 늘어날수록 이자가 커집니다!",
+        "[팁] 스트레스가 100%가 되면 건강을 잃고 게임이 종료됩니다. 적절한 휴식도 투자입니다.",
+        "[팁] 갑작스러운 교통사고에 대비해 항상 '비상금(현금)'을 남겨둬야 파산을 막을 수 있습니다.",
+        "[팁] 대출을 받으면 매달 이자가 지출됩니다. 감당할 수 있는 능력 안에서만 빌리세요.",
+        "[팁] 월급 명세서의 '실수령액'은 세금과 보험료를 뗀, 실제로 내가 쓸 수 있는 돈입니다.",
+        "[팁] 현금이 바닥나면 파산하게 됩니다. 수입보다 지출이 많지 않도록 관리하세요."
+    };
 
     void Awake() { instance = this; }
 
@@ -98,12 +111,13 @@ public class GameManager : MonoBehaviour
         CloseAllPanels();
         UpdateUI();
 
+        if (tipText) tipText.gameObject.SetActive(false);
+
         if (!isGameStarted)
         {
             Time.timeScale = 0;
             if (startPanel) startPanel.SetActive(true);
 
-            // [Sound] 타이틀 화면 배경음
             if (SoundManager.instance) SoundManager.instance.PlayBGM(SoundManager.instance.titleBgm);
         }
         else
@@ -111,7 +125,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             if (startPanel) startPanel.SetActive(false);
 
-            // [Sound] 게임 중 거리 배경음
             if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
         }
     }
@@ -124,7 +137,6 @@ public class GameManager : MonoBehaviour
         if (startPanel) startPanel.SetActive(false);
         UpdateUI();
 
-        // [Sound] 게임 시작 -> 거리 배경음 재생
         if (SoundManager.instance) SoundManager.instance.PlayMainBGM();
     }
 
@@ -170,7 +182,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentMonth > 10 || isGameOver) return;
 
-        // [Sound] 버튼 클릭음 (다음달 넘기기)
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.nextMonthSfx);
 
         if (stress + 40 >= 100)
@@ -220,7 +231,7 @@ public class GameManager : MonoBehaviour
 
         cash += netPay;
         cash -= LIVING_COST;
-        stress += 40; // [밸런스]
+        stress += 40;
 
         UpdateUI();
 
@@ -245,7 +256,6 @@ public class GameManager : MonoBehaviour
 
     public void OnConfirmReport()
     {
-        // [Sound] 확인 버튼 클릭음 (일반 클릭음)
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (reportPanel) reportPanel.SetActive(false);
@@ -254,10 +264,18 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FadeSequence()
     {
+        if (tipText != null && financialFacts.Length > 0)
+        {
+            tipText.gameObject.SetActive(true);
+            int randIdx = Random.Range(0, financialFacts.Length);
+            tipText.text = financialFacts[randIdx];
+        }
+
         if (fadeImage != null)
         {
             fadeImage.gameObject.SetActive(true);
             float t = 0;
+            // 어두워지기 (Fade In)
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime * 2f;
@@ -267,19 +285,22 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(0, 0, 0, 1);
         }
 
-        yield return new WaitForSecondsRealtime(0.5f);
+        // [수정] 1초만 대기 후 진행 (빠른 템포)
+        yield return new WaitForSecondsRealtime(1.0f);
 
         currentMonth++;
         hasSelfDevThisMonth = false;
 
         if (currentMonth > 10)
         {
+            if (tipText) tipText.gameObject.SetActive(false);
             EndGame("완료");
             yield break;
         }
 
         if (stress >= 100)
         {
+            if (tipText) tipText.gameObject.SetActive(false);
             EndGame("스트레스");
             yield break;
         }
@@ -298,6 +319,9 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(0, 0, 0, 0);
             fadeImage.gameObject.SetActive(false);
         }
+
+        if (tipText) tipText.gameObject.SetActive(false);
+
         Time.timeScale = 1;
     }
 
@@ -319,8 +343,6 @@ public class GameManager : MonoBehaviour
     public void ActionPromotion()
     {
         if (isGameOver) return;
-
-        // [Sound] 버튼 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
@@ -360,8 +382,6 @@ public class GameManager : MonoBehaviour
     public void ActionStudy()
     {
         if (isGameOver) return;
-
-        // [Sound] 버튼 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (hasSelfDevThisMonth) { ShowDuplicateActionPanel(); return; }
@@ -396,14 +416,12 @@ public class GameManager : MonoBehaviour
 
     public void ActionBorrow()
     {
-        // [Sound] 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
         if (isGameOver || loan >= 2000000) return; loan += 500000; cash += 500000; UpdateUI();
     }
 
     public void ActionRepay()
     {
-        // [Sound] 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
         if (isGameOver || loan <= 0) return; if (cash < 500000) { ShowInsufficientFundsPanel(); return; }
         loan -= 500000; cash -= 500000; UpdateUI();
@@ -411,7 +429,6 @@ public class GameManager : MonoBehaviour
 
     public void ActionJoinSavings()
     {
-        // [Sound] 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (isGameOver || isSavingsJoined) return;
@@ -439,21 +456,18 @@ public class GameManager : MonoBehaviour
         CloseAllPanels();
         UpdateUI();
 
-        // [Sound] 편의점 먹는 소리 (냠냠)
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.eatSfx);
 
         if (alertPanel)
         {
             alertPanel.SetActive(true);
-            if (txtAlertMsg) txtAlertMsg.text = "스트레스 -30";
+            if (txtAlertMsg) txtAlertMsg.text = "편의점 이용 완료!\n스트레스 -30";
         }
     }
 
     public void ActionRest()
     {
         if (isGameOver) return;
-
-        // [Sound] 휴식 효과음 (그냥 클릭음 사용)
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (stress <= 0) { ShowLowStressPanel(); return; }
@@ -471,7 +485,6 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
-        // [Sound] 쾅! 교통사고 소리
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.crashSfx);
 
         if (accidentPanel)
@@ -483,7 +496,6 @@ public class GameManager : MonoBehaviour
 
     public void OnConfirmAccident()
     {
-        // [Sound] 확인 버튼 클릭음
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         if (accidentPanel) accidentPanel.SetActive(false);
@@ -578,30 +590,33 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         Time.timeScale = 0;
+
         if (fadeImage != null) { fadeImage.color = new Color(0, 0, 0, 0); fadeImage.gameObject.SetActive(false); }
+        if (tipText != null) tipText.gameObject.SetActive(false);
+
         CloseAllPanels();
 
-        // [Sound] 배경음 끄고 결과 효과음 재생
         if (SoundManager.instance)
         {
             SoundManager.instance.StopBGM();
 
-            if (type == "스트레스")
-            {
-                failStressPanel.SetActive(true);
-                SoundManager.instance.PlaySFX(SoundManager.instance.failStressBgm);
-            }
-            else if (type == "파산")
-            {
-                UpdateUI(); failMoneyPanel.SetActive(true);
-                SoundManager.instance.PlaySFX(SoundManager.instance.failMoneyBgm);
-            }
-            else
-            {
-                successPanel.SetActive(true);
-                SoundManager.instance.PlaySFX(SoundManager.instance.successBgm);
-                if (txtResultScore != null) txtResultScore.text = $" {(cash + savings - loan):N0}";
-            }
+            if (type == "스트레스") SoundManager.instance.PlaySFX(SoundManager.instance.failStressBgm);
+            else if (type == "파산") SoundManager.instance.PlaySFX(SoundManager.instance.failMoneyBgm);
+            else SoundManager.instance.PlaySFX(SoundManager.instance.successBgm);
+        }
+
+        if (type == "스트레스")
+        {
+            failStressPanel.SetActive(true);
+        }
+        else if (type == "파산")
+        {
+            UpdateUI(); failMoneyPanel.SetActive(true);
+        }
+        else
+        {
+            successPanel.SetActive(true);
+            if (txtResultScore != null) txtResultScore.text = $" {(cash + savings - loan):N0}";
         }
     }
 }
