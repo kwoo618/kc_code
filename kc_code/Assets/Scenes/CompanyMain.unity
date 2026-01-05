@@ -59840,11 +59840,11 @@ MonoBehaviour:
   quizCorrectPanel: {fileID: 1634758414}
   quizWrongPanel: {fileID: 1666333335}
   txtWrongAnswer: {fileID: 624083576}
-  currentMonth: 9
+  currentMonth: 1
   cash: 300000
   savings: 0
   loan: 0
-  stress: 50
+  stress: 0
   jobLevel: 1
   baseSalary: 2000000
   maxJobLevel: 10
@@ -65550,7 +65550,7 @@ GameObject:
   - component: {fileID: 555780392}
   m_Layer: 0
   m_Name: Sound
-  m_TagString: Untagged
+  m_TagString: Quiz_BGM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128339,6 +128339,7 @@ MonoBehaviour:
   bankBgm: {fileID: 8300000, guid: 90954d6c06279da41aa1a4cc4463db83, type: 3}
   academyBgm: {fileID: 8300000, guid: edd8b6879058e78489c7c765df60ce71, type: 3}
   homeBgm: {fileID: 8300000, guid: 9682af873f906e748a79f94ba6dc690c, type: 3}
+  officeBgm: {fileID: 8300000, guid: 50266f8403ad0804ba4cce6021958a6a, type: 3}
   clickSfx: {fileID: 8300000, guid: d041ec44bbec11f4ea8c4425215b9ff8, type: 3}
   nextMonthSfx: {fileID: 8300000, guid: 267c1a4c3fb7f5d479bbfdd6b57b6ca9, type: 3}
   eatSfx: {fileID: 8300000, guid: adb5c8359608fbd4187f15a481a96128, type: 3}
@@ -232192,7 +232193,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -27.903688, y: -17.591087}
+    - - {x: -27.903688, y: -17.390669}
       - {x: -27.288992, y: 39.87252}
       - {x: -51.63575, y: 39.907063}
       - {x: -51.569176, y: -36.30174}
@@ -232200,8 +232201,8 @@ PolygonCollider2D:
       - {x: 43.902863, y: 48.43924}
       - {x: -3.2741508, y: 45.820805}
       - {x: -27.600483, y: 16.20374}
-      - {x: 28.683344, y: 16.207243}
-      - {x: 28.980368, y: -17.61262}
+      - {x: 29.434914, y: 16.05693}
+      - {x: 29.681835, y: -17.362097}
   m_UseDelaunayMesh: 0
 --- !u!1 &1060099715
 GameObject:

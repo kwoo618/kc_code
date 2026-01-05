@@ -17,10 +17,27 @@ public class PlayerInteraction : MonoBehaviour
         // [주의] 퀴즈 이외의 다른 로직은 시간이 멈춰있을 때 실행되지 않도록 차단
         if (Time.timeScale == 0) return;
 
-        // --- [1. BGM 체크] ---
-        if (other.CompareTag("Home_BGM")) SoundManager.instance.PlayHomeBGM();
-        else if (other.CompareTag("Bank_BGM")) SoundManager.instance.PlayBankBGM();
-        else if (other.CompareTag("Academy_BGM")) SoundManager.instance.PlayAcademyBGM();
+        // --- [1. BGM 체크 및 문 소리 재생] ---
+        if (other.CompareTag("Home_BGM"))
+        {
+            SoundManager.instance.PlayHomeBGM();
+            PlayDoorSound(); // 여기서 문 소리 추가!
+        }
+        else if (other.CompareTag("Bank_BGM"))
+        {
+            SoundManager.instance.PlayBankBGM();
+            PlayDoorSound();
+        }
+        else if (other.CompareTag("Academy_BGM"))
+        {
+            SoundManager.instance.PlayAcademyBGM();
+            PlayDoorSound();
+        }
+        else if (other.CompareTag("Quiz_BGM"))
+        {
+            SoundManager.instance.PlayOfficeBGM();
+            PlayDoorSound();
+        }
 
         // --- [2. UI 및 효과음 체크] ---
         if (other.CompareTag("Door"))
@@ -53,9 +70,10 @@ public class PlayerInteraction : MonoBehaviour
         // 시간이 멈춘 상태라면 Exit 로직 무시 (패널 닫힘 방지)
         if (Time.timeScale == 0) return;
 
-        if (other.CompareTag("Home_BGM") || other.CompareTag("Bank_BGM") || other.CompareTag("Academy_BGM"))
+        if (other.CompareTag("Home_BGM") || other.CompareTag("Bank_BGM") || other.CompareTag("Academy_BGM") || other.CompareTag("Quiz_BGM"))
         {
             SoundManager.instance.PlayMainBGM();
+            PlayDoorSound();
         }
 
         if (other.CompareTag("Bank") || other.CompareTag("Academy") || other.CompareTag("Store"))
