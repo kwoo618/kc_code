@@ -4,18 +4,27 @@ public class PlayerInteraction : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
     {
-        // [����] Ÿ��Ʋ ȭ��(���� ����)������ Ʈ���Ű� BGM�� �ٲ��� ���ϰ� ����
+        // --- [퀴즈 트리거 우선 체크] ---
+        // 퀴즈는 시간 정지(Time.timeScale == 0) 상태에서도 실행될 수 있도록 위로 올립니다.
+        if (other.CompareTag("Quiz"))
+        {
+            Debug.Log("Quiz Trigger Detected!"); // 트리거 작동 확인용 로그
+            GameManager.instance.ShowQuizConfirm();
+            PlayAlertSound();
+            return; // 퀴즈 실행 시 여기서 함수 종료 (다른 로직과 섞이지 않게 함)
+        }
+
+        // [주의] 퀴즈 이외의 다른 로직은 시간이 멈춰있을 때 실행되지 않도록 차단
         if (Time.timeScale == 0) return;
 
-        // --- [1. BGM üũ] ---
+        // --- [1. BGM 체크] ---
         if (other.CompareTag("Home_BGM")) SoundManager.instance.PlayHomeBGM();
         else if (other.CompareTag("Bank_BGM")) SoundManager.instance.PlayBankBGM();
         else if (other.CompareTag("Academy_BGM")) SoundManager.instance.PlayAcademyBGM();
 
-        // --- [2. UI �� ȿ���� üũ] ---
+        // --- [2. UI 및 효과음 체크] ---
         if (other.CompareTag("Door"))
         {
-            Debug.Log("Door �Ҹ� ���");
             PlayDoorSound();
         }
         else if (other.CompareTag("Bank"))
@@ -41,6 +50,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
+        // 시간이 멈춘 상태라면 Exit 로직 무시 (패널 닫힘 방지)
         if (Time.timeScale == 0) return;
 
         if (other.CompareTag("Home_BGM") || other.CompareTag("Bank_BGM") || other.CompareTag("Academy_BGM"))

@@ -12,6 +12,7 @@ TagManager:
   - Academy_BGM
   - Door
   - NextTurn
+  - Quiz
   layers:
   - Default
   - TransparentFX

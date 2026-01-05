@@ -67,6 +67,16 @@ public class GameManager : MonoBehaviour
     public Button savingsJoinBtn;
     public TextMeshProUGUI savingsBtnText;
 
+    [Header("--- 퀴즈 시스템 ---")]
+    public GameObject quizTryPanel;       // 퀴즈 풀지 말지 여부 확인 패널
+    public GameObject quizPanel;          // 퀴즈 팝업 패널
+    public TextMeshProUGUI quizQuestion;  // 문제 텍스트
+    public Button[] quizButtons;          // 보기 버튼 3개
+    public TextMeshProUGUI[] quizBtnTexts;// 보기 버튼의 텍스트 3개
+    public GameObject quizCorrectPanel;   // 정답일 때 띄울 패널
+    public GameObject quizWrongPanel;     // 틀렸을 때 띄울 패널
+    public TextMeshProUGUI txtWrongAnswer; // "정답은 2번입니다!" 라고 써줄 텍스트
+
     [Header("--- 게임 데이터 및 밸런스 ---")]
     public int currentMonth = 1;
     public long cash = 300000;
@@ -91,6 +101,7 @@ public class GameManager : MonoBehaviour
 
     private bool isSavingsJoined = false;
     private bool hasSelfDevThisMonth = false;
+    private bool hasQuizThisMonth = false; // [추가] 이번 달 퀴즈 수행 여부
 
     // [수정] 게임 내 콘텐츠와 직접 관련된 팁으로 교체
     private string[] financialFacts = new string[]
@@ -102,6 +113,48 @@ public class GameManager : MonoBehaviour
         "[Tip!] 대출을 받으면 매달 이자가 지출됩니다.\n감당할 수 있는 능력 안에서만 빌리세요.",
         "[Tip!] 월급 명세서의 '실수령액'은 세금과 보험료를 뗀,\n실제로 내가 쓸 수 있는 돈입니다.",
         "[Tip!] 현금이 바닥나면 파산하게 됩니다.\n수입보다 지출이 많지 않도록 관리하세요."
+    };
+
+    [System.Serializable]
+    public struct QuizData
+    {
+        public string question;
+        public string[] answers;
+        public int correctAnswer; // 0, 1, 2 중 하나
+    }
+
+    private QuizData[] quizzes = new QuizData[]
+    {
+        new QuizData { question = "'복리'의 의미로 올바른 것은?", answers = new string[] { "원금에만 이자가 붙음", "이자에 이자가 붙음", "대출 이자가 줄어듦" }, correctAnswer = 1 },
+        new QuizData { question = "예금자보호법으로 보호받는 한도는?", answers = new string[] { "인당 3천만원", "인당 5천만원", "인당 1억원" }, correctAnswer = 1 },
+        new QuizData { question = "주식에서 기업이 이익을 주주에게 나눠주는 것은?", answers = new string[] { "배당", "이자", "상환" }, correctAnswer = 0 },
+        new QuizData { question = "물가가 지속적으로 오르는 현상은?", answers = new string[] { "디플레이션", "스태그플레이션", "인플레이션" }, correctAnswer = 2 },
+        new QuizData { question = "신용점수가 낮아지면 발생하는 불이익은?", answers = new string[] { "대출 금리 상승", "취업 즉시 제한", "은행 이용 불가" }, correctAnswer = 0 },
+        new QuizData { question = "분산 투자의 중요성을 강조한 격언은?", answers = new string[] { "계란을 한 바구니에 담지 마라", "티끌 모아 태산", "소 잃고 외양간 고친다" }, correctAnswer = 0 },
+        new QuizData { question = "소득에서 세금 등을 뺀 실제 쓸 수 있는 돈은?", answers = new string[] { "총급여", "실수령액", "기본급" }, correctAnswer = 1 },
+        new QuizData { question = "은행에 돈을 맡기는 가장 안전한 방법은?", answers = new string[] { "주식", "예금", "가상화폐" }, correctAnswer = 1 },
+        new QuizData { question = "국가에 납부하는 필수 비용은?", answers = new string[] { "기부금", "세금", "배당금" }, correctAnswer = 1 },
+        new QuizData { question = "수입보다 지출이 많을 때 발생하는 상태는?", answers = new string[] { "흑자", "적자", "무역" }, correctAnswer = 1 },
+        new QuizData { question = "돈의 가치가 떨어지고 물가가 오르는 이유는?", answers = new string[] { "화폐 공급 증가", "화폐 공급 감소", "수입 증가" }, correctAnswer = 0 },
+        new QuizData { question = "자산을 현금으로 바꿀 수 있는 정도는?", answers = new string[] { "수익성", "안정성", "유동성" }, correctAnswer = 2 },
+        new QuizData { question = "기업의 소유권을 나타내는 유가증권은?", answers = new string[] { "주식", "채권", "보험" }, correctAnswer = 0 },
+        new QuizData { question = "중앙은행이 결정하는 기본 금리는?", answers = new string[] { "시장금리", "우대금리", "기준금리" }, correctAnswer = 2 },
+        new QuizData { question = "돈을 빌려준 대가로 받는 돈은?", answers = new string[] { "이자", "원금", "할부금" }, correctAnswer = 0 },
+        new QuizData { question = "미래의 위험에 대비해 돈을 내는 제도는?", answers = new string[] { "적금", "주식", "보험" }, correctAnswer = 2 },
+        new QuizData { question = "지출을 줄이기 위해 가장 먼저 할 일은?", answers = new string[] { "가계부 작성", "카드 추가 발급", "대출 받기" }, correctAnswer = 0 },
+        new QuizData { question = "가격이 오를 것으로 예상해 미리 사는 행위는?", answers = new string[] { "충동구매", "사재기", "과소비" }, correctAnswer = 1 },
+        new QuizData { question = "나라 간의 돈을 바꾸는 비율은?", answers = new string[] { "금리", "환율", "주가" }, correctAnswer = 1 },
+        new QuizData { question = "일정 기간 돈을 맡기기로 약속하는 저축은?", answers = new string[] { "보통예금", "정기예금", "자유적금" }, correctAnswer = 1 },
+        new QuizData { question = "개인의 경제적 신용도를 숫자로 나타낸 것은?", answers = new string[] { "신용점수", "시험점수", "통장잔고" }, correctAnswer = 0 },
+        new QuizData { question = "체크카드와 신용카드의 가장 큰 차이점은?", answers = new string[] { "결제 방식", "카드 색상", "사용 가능 연령" }, correctAnswer = 0 },
+        new QuizData { question = "경기가 안 좋을 때 정부가 주로 하는 일은?", answers = new string[] { "금리 인상", "금리 인하", "세금 인상" }, correctAnswer = 1 },
+        new QuizData { question = "원금 손실 가능성이 있는 금융 상품은?", answers = new string[] { "정기예금", "펀드/주식", "청약저축" }, correctAnswer = 1 },
+        new QuizData { question = "월급에서 미리 떼어가는 세금 제도는?", answers = new string[] { "원천징수", "연말정산", "부가세" }, correctAnswer = 0 },
+        new QuizData { question = "상품의 가치를 나타내는 척도는?", answers = new string[] { "무게", "크기", "가격" }, correctAnswer = 2 },
+        new QuizData { question = "한 나라의 경제 규모를 나타내는 지표는?", answers = new string[] { "GDP", "CPI", "KOSPI" }, correctAnswer = 0 },
+        new QuizData { question = "빚을 갚지 못해 법적으로 선언하는 상태는?", answers = new string[] { "파산", "정지", "해지" }, correctAnswer = 0 },
+        new QuizData { question = "비상금을 마련해야 하는 가장 큰 이유는?", answers = new string[] { "쇼핑하려고", "갑작스러운 지출 대비", "이자 받으려고" }, correctAnswer = 1 },
+        new QuizData { question = "금융 거래 시 본인임을 확인하는 수단은?", answers = new string[] { "공동인증서", "학생증", "멤버십카드" }, correctAnswer = 0 }
     };
 
     void Awake() { instance = this; }
@@ -181,6 +234,7 @@ public class GameManager : MonoBehaviour
         baseSalary = 2000000;
         isSavingsJoined = false;
         hasSelfDevThisMonth = false;
+        hasQuizThisMonth = false; // [추가]
     }
 
     public void OnClickNextMonth()
@@ -295,6 +349,7 @@ public class GameManager : MonoBehaviour
 
         currentMonth++;
         hasSelfDevThisMonth = false;
+        hasQuizThisMonth = false; // [추가] 매달 퀴즈 기회 리셋
 
         if (currentMonth > 10)
         {
@@ -343,6 +398,22 @@ public class GameManager : MonoBehaviour
         if (lowStressPanel) lowStressPanel.SetActive(false);
         if (duplicateActionPanel) duplicateActionPanel.SetActive(false);
         if (accidentPanel) accidentPanel.SetActive(false);
+
+        // 추가된 패널들 끄기
+        if (quizTryPanel) quizTryPanel.SetActive(false);
+        if (quizPanel) quizPanel.SetActive(false);
+        if (quizCorrectPanel) quizCorrectPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
+        if (quizWrongPanel) quizWrongPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
+        
+        // 실제로 끄기
+        if (quizCorrectPanel) quizCorrectPanel.SetActive(false);
+        if (quizWrongPanel) quizWrongPanel.SetActive(false);
+
+        // 중요 패널들이 다 꺼졌다면 시간 재개
+        if (!reportPanel.activeSelf && !accidentPanel.activeSelf && !quizPanel.activeSelf && !quizTryPanel.activeSelf)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     public void ActionPromotion()
@@ -559,6 +630,76 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    // --- [추가/수정] 1단계: 퀴즈 참여 여부 확인 패널 띄우기 ---
+    public void ShowQuizConfirm()
+    {
+        if (quizTryPanel == null || isGameOver) return;
+
+        // 이번 달 이미 참여했는지 체크
+        if (hasQuizThisMonth)
+        {
+            if (alertPanel)
+            {
+                alertPanel.SetActive(true);
+                if (txtAlertMsg) txtAlertMsg.text = "퀴즈는 한 달에 한 번만 참여할 수 있습니다.";
+            }
+            return;
+        }
+
+        Time.timeScale = 0; // 게임 일시정지
+        quizTryPanel.SetActive(true);
+    }
+
+    // --- [수정] 2단계: 실제 퀴즈 문제 패널 시작 ("예" 버튼 클릭 시) ---
+    public void StartQuiz()
+    {
+        if (quizTryPanel) quizTryPanel.SetActive(false); // 확인창 닫기
+        if (quizPanel == null) return;
+        
+        quizPanel.SetActive(true);
+
+        int rand = Random.Range(0, quizzes.Length);
+        QuizData selectedQuiz = quizzes[rand];
+        quizQuestion.text = selectedQuiz.question;
+
+        // 정답 번호 (1, 2, 3번 중 하나)
+        int displayCorrectNum = selectedQuiz.correctAnswer + 1;
+
+        for (int i = 0; i < 3; i++)
+        {
+            int index = i; 
+            quizBtnTexts[i].text = selectedQuiz.answers[i];
+            quizButtons[i].onClick.RemoveAllListeners();
+            // OnClickAnswer 호출 시 정답 번호(displayCorrectNum) 전달
+            quizButtons[i].onClick.AddListener(() => OnClickAnswer(index == selectedQuiz.correctAnswer, displayCorrectNum));
+        }
+    }
+
+    // --- [수정] 답 선택 시 결과 패널 처리 ---
+    void OnClickAnswer(bool isCorrect, int correctNum)
+    {
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+
+        hasQuizThisMonth = true;
+        quizPanel.SetActive(false); 
+
+        if (isCorrect)
+        {
+            cash += 100000;
+            UpdateUI();
+            if (quizCorrectPanel) quizCorrectPanel.SetActive(true); 
+        }
+        else
+        {
+            if (quizWrongPanel)
+            {
+                quizWrongPanel.SetActive(true);
+                if (txtWrongAnswer != null)
+                    txtWrongAnswer.text = $"오답입니다!\n정답은 <color=yellow>{correctNum}번</color>입니다.";
+            }
+        }
+    }
+
     public void CloseAllPanels()
     {
         if (bankPanel) bankPanel.SetActive(false);
@@ -572,6 +713,10 @@ public class GameManager : MonoBehaviour
         if (highStressPanel) highStressPanel.SetActive(false);
         if (lowStressPanel) lowStressPanel.SetActive(false);
         if (accidentPanel) accidentPanel.SetActive(false);
+        if (quizTryPanel) quizTryPanel.SetActive(false);
+        if (quizPanel) quizPanel.SetActive(false);
+        if (quizCorrectPanel) quizCorrectPanel.SetActive(false);
+        if (quizWrongPanel) quizWrongPanel.SetActive(false);
     }
 
     void UpdateUI()
