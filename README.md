@@ -75,13 +75,13 @@
 | :---: | :---: |
 | ![Full_Map](https://github.com/user-attachments/assets/6e649853-f1db-4c29-adb2-0df135fe0420) | ![Start](https://github.com/user-attachments/assets/1f4cb485-1f6b-400b-bfac-5070ea29dd05) |
 
-| 회사(아카데미) 내부 | 은행 내부 | 퀴즈 건물 내부 |
+| 아카데미 내부 | 은행 내부 | 퀴즈 건물 내부 |
 | :---: | :---: | :---: |
 | ![Office_In](https://github.com/user-attachments/assets/00737616-048c-4098-922b-867299ae65f0) | ![Bank_In](https://github.com/user-attachments/assets/32ca3141-dfed-440d-ae0d-7d7c8a39fb2d) | ![Quiz_In](https://github.com/user-attachments/assets/e8f2690e-9fd5-408b-99eb-dbf91ac63a12) |
 
-| 편의점 건물 | 집 내부 | 
-| :---: | :---: | 
-| ![Store_Build](https://github.com/user-attachments/assets/e5336110-f62b-465d-9384-cb1c9b162d8c) | ![Home_In](https://github.com/user-attachments/assets/8075e4ce-aeb0-4d1a-9196-2bbf36ec3b9e) |
+| 먹거리 건물 | 먹거리 건물 | 집 내부 | 
+| :---: | :---: | :---: | 
+| ![Store_Build](https://github.com/user-attachments/assets/e5336110-f62b-465d-9384-cb1c9b162d8c) | ![Store_Build](https://github.com/user-attachments/assets/3014d135-2608-41a3-9631-8a80c9005c50) | ![Home_In](https://github.com/user-attachments/assets/8075e4ce-aeb0-4d1a-9196-2bbf36ec3b9e) |
 
 ---
 
