@@ -783,6 +783,19 @@ public class GameManager : MonoBehaviour
         if (pausePanel) pausePanel.SetActive(false); // [추가] 일시정지 패널도 닫기
     }
 
+    public void OnClickQuizClose()
+    {
+        if (quizTryPanel) quizTryPanel.SetActive(false);
+        if (quizPanel) quizPanel.SetActive(false);
+
+        if (!reportPanel.activeSelf && !accidentPanel.activeSelf && !isGameOver)
+        {
+            Time.timeScale = 1;
+        }
+
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+    }
+
     // [추가] 일시정지 패널을 켜고 끄는 함수 (토글)
     // ESC 키를 누르거나, '계속하기' 버튼을 누를 때 호출됩니다.
     public void OnTogglePause()
