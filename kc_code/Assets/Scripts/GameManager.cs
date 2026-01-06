@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic; // [필수] List 사용을 위해 추가됨
 
 public class GameManager : MonoBehaviour
 {
@@ -103,7 +104,10 @@ public class GameManager : MonoBehaviour
     private bool hasSelfDevThisMonth = false;
     private bool hasQuizThisMonth = false; // [추가] 이번 달 퀴즈 수행 여부
 
-    // [수정] 게임 내 콘텐츠와 직접 관련된 팁으로 교체
+    // [추가] 중복 방지를 위한 문제 번호 리스트
+    private List<int> availableQuizIndices = new List<int>();
+
+    // [수정] 게임 내 콘텐츠와 직접 관련된 팁
     private string[] financialFacts = new string[]
     {
         "[Tip!] 적금에 가입하면 만기 시 '원금 + 이자'를\n받을 수 있어 목돈 마련에 유리합니다.",
@@ -123,38 +127,61 @@ public class GameManager : MonoBehaviour
         public int correctAnswer; // 0, 1, 2 중 하나
     }
 
+    // [수정] 40개의 팩트 기반 퀴즈 데이터
     private QuizData[] quizzes = new QuizData[]
     {
+        // 1. 경제 용어 정의 (객관적 사실)
         new QuizData { question = "'복리'의 의미로 올바른 것은?", answers = new string[] { "원금에만 이자가 붙음", "이자에 이자가 붙음", "대출 이자가 줄어듦" }, correctAnswer = 1 },
         new QuizData { question = "예금자보호법으로 보호받는 한도는?", answers = new string[] { "인당 3천만원", "인당 5천만원", "인당 1억원" }, correctAnswer = 1 },
         new QuizData { question = "주식에서 기업이 이익을 주주에게 나눠주는 것은?", answers = new string[] { "배당", "이자", "상환" }, correctAnswer = 0 },
         new QuizData { question = "물가가 지속적으로 오르는 현상은?", answers = new string[] { "디플레이션", "스태그플레이션", "인플레이션" }, correctAnswer = 2 },
         new QuizData { question = "신용점수가 낮아지면 발생하는 불이익은?", answers = new string[] { "대출 금리 상승", "취업 즉시 제한", "은행 이용 불가" }, correctAnswer = 0 },
+     
+        // 2. 격언 및 상식 (널리 통용되는 원칙)
         new QuizData { question = "분산 투자의 중요성을 강조한 격언은?", answers = new string[] { "계란을 한 바구니에 담지 마라", "티끌 모아 태산", "소 잃고 외양간 고친다" }, correctAnswer = 0 },
         new QuizData { question = "소득에서 세금 등을 뺀 실제 쓸 수 있는 돈은?", answers = new string[] { "총급여", "실수령액", "기본급" }, correctAnswer = 1 },
+     
+        // 3. 상품의 특성 비교 (가치 판단이 아닌 '특징' 비교)
         new QuizData { question = "은행에 돈을 맡기는 가장 안전한 방법은?", answers = new string[] { "주식", "예금", "가상화폐" }, correctAnswer = 1 },
         new QuizData { question = "국가에 납부하는 필수 비용은?", answers = new string[] { "기부금", "세금", "배당금" }, correctAnswer = 1 },
         new QuizData { question = "수입보다 지출이 많을 때 발생하는 상태는?", answers = new string[] { "흑자", "적자", "무역" }, correctAnswer = 1 },
         new QuizData { question = "돈의 가치가 떨어지고 물가가 오르는 이유는?", answers = new string[] { "화폐 공급 증가", "화폐 공급 감소", "수입 증가" }, correctAnswer = 0 },
-        new QuizData { question = "자산을 현금으로 바꿀 수 있는 정도는?", answers = new string[] { "수익성", "안정성", "유동성" }, correctAnswer = 2 },
-        new QuizData { question = "기업의 소유권을 나타내는 유가증권은?", answers = new string[] { "주식", "채권", "보험" }, correctAnswer = 0 },
         new QuizData { question = "중앙은행이 결정하는 기본 금리는?", answers = new string[] { "시장금리", "우대금리", "기준금리" }, correctAnswer = 2 },
         new QuizData { question = "돈을 빌려준 대가로 받는 돈은?", answers = new string[] { "이자", "원금", "할부금" }, correctAnswer = 0 },
-        new QuizData { question = "미래의 위험에 대비해 돈을 내는 제도는?", answers = new string[] { "적금", "주식", "보험" }, correctAnswer = 2 },
-        new QuizData { question = "지출을 줄이기 위해 가장 먼저 할 일은?", answers = new string[] { "가계부 작성", "카드 추가 발급", "대출 받기" }, correctAnswer = 0 },
-        new QuizData { question = "가격이 오를 것으로 예상해 미리 사는 행위는?", answers = new string[] { "충동구매", "사재기", "과소비" }, correctAnswer = 1 },
+     
+        // 4. 행동에 따른 결과 (인과 관계)
         new QuizData { question = "나라 간의 돈을 바꾸는 비율은?", answers = new string[] { "금리", "환율", "주가" }, correctAnswer = 1 },
-        new QuizData { question = "일정 기간 돈을 맡기기로 약속하는 저축은?", answers = new string[] { "보통예금", "정기예금", "자유적금" }, correctAnswer = 1 },
         new QuizData { question = "개인의 경제적 신용도를 숫자로 나타낸 것은?", answers = new string[] { "신용점수", "시험점수", "통장잔고" }, correctAnswer = 0 },
-        new QuizData { question = "체크카드와 신용카드의 가장 큰 차이점은?", answers = new string[] { "결제 방식", "카드 색상", "사용 가능 연령" }, correctAnswer = 0 },
-        new QuizData { question = "경기가 안 좋을 때 정부가 주로 하는 일은?", answers = new string[] { "금리 인상", "금리 인하", "세금 인상" }, correctAnswer = 1 },
         new QuizData { question = "원금 손실 가능성이 있는 금융 상품은?", answers = new string[] { "정기예금", "펀드/주식", "청약저축" }, correctAnswer = 1 },
         new QuizData { question = "월급에서 미리 떼어가는 세금 제도는?", answers = new string[] { "원천징수", "연말정산", "부가세" }, correctAnswer = 0 },
-        new QuizData { question = "상품의 가치를 나타내는 척도는?", answers = new string[] { "무게", "크기", "가격" }, correctAnswer = 2 },
         new QuizData { question = "한 나라의 경제 규모를 나타내는 지표는?", answers = new string[] { "GDP", "CPI", "KOSPI" }, correctAnswer = 0 },
         new QuizData { question = "빚을 갚지 못해 법적으로 선언하는 상태는?", answers = new string[] { "파산", "정지", "해지" }, correctAnswer = 0 },
-        new QuizData { question = "비상금을 마련해야 하는 가장 큰 이유는?", answers = new string[] { "쇼핑하려고", "갑작스러운 지출 대비", "이자 받으려고" }, correctAnswer = 1 },
-        new QuizData { question = "금융 거래 시 본인임을 확인하는 수단은?", answers = new string[] { "공동인증서", "학생증", "멤버십카드" }, correctAnswer = 0 }
+
+        // 5. 세금 및 제도
+        new QuizData { question = "1년 동안 낸 세금을 정산하여 더 낸 돈을 돌려받거나 더 내는 절차는?", answers = new string[] { "부가가치세 신고", "연말정산", "분리과세" }, correctAnswer = 1 },
+        new QuizData { question = "현금 결제 시 발급받아 연말정산 소득공제 혜택을 받는 영수증은?", answers = new string[] { "간이영수증", "현금영수증", "세금계산서" }, correctAnswer = 1 },
+        new QuizData { question = "매달 월세를 내지 않고 보증금을 맡겼다가 돌려받는 임대차 제도는?", answers = new string[] { "월세", "매매", "전세" }, correctAnswer = 2 },
+        new QuizData { question = "새 아파트 분양(청약) 자격을 얻기 위해 가입하는 필수 통장은?", answers = new string[] { "주택청약종합저축", "정기예금", "마이너스통장" }, correctAnswer = 0 },
+
+        // 6. 은행 및 대출 상식
+        new QuizData { question = "대출 만기까지 금리가 변하지 않고 일정하게 유지되는 방식은?", answers = new string[] { "변동금리", "고정금리", "가산금리" }, correctAnswer = 1 },
+        new QuizData { question = "담보 없이 개인의 신용(소득, 직업 등)만 보고 빌려주는 대출은?", answers = new string[] { "담보대출", "신용대출", "전세자금대출" }, correctAnswer = 1 },
+        new QuizData { question = "소득 대비 전체 빚의 원리금 상환액 비율을 따지는 규제는?", answers = new string[] { "DSR", "LTV", "BIS" }, correctAnswer = 0 },
+        new QuizData { question = "카드 대금의 일부만 결제하고 나머지는 이월하여 갚는 서비스는?", answers = new string[] { "할부", "리볼빙", "포인트 결제" }, correctAnswer = 1 },
+
+        // 7. 투자 및 경제 용어
+        new QuizData { question = "주식처럼 시장에서 자유롭게 사고팔 수 있는 펀드 상품은?", answers = new string[] { "예금", "ETF", "적금" }, correctAnswer = 1 },
+        new QuizData { question = "재무 구조가 튼튼하고 수익성이 좋은 대형 우량주를 뜻하는 말은?", answers = new string[] { "블루칩", "옐로칩", "레드칩" }, correctAnswer = 0 },
+        new QuizData { question = "주식 시장에서 주가가 계속 하락하는 약세장을 뜻하는 말은?", answers = new string[] { "불 마켓", "베어 마켓", "프리 마켓" }, correctAnswer = 1 },
+        new QuizData { question = "어떤 선택으로 인해 포기해야 하는 다른 선택지의 가치는?", answers = new string[] { "매몰비용", "기회비용", "유지비용" }, correctAnswer = 1 },
+        new QuizData { question = "물가가 지속적으로 하락하고 경제 활동이 침체되는 현상은?", answers = new string[] { "디플레이션", "인플레이션", "스태그플레이션" }, correctAnswer = 0 },
+        new QuizData { question = "국제 거래의 결제 수단으로 통용되는 핵심 통화(예: 달러)는?", answers = new string[] { "가상화폐", "기축통화", "지역화폐" }, correctAnswer = 1 },
+
+        // 8. 금융 편의 및 보안
+        new QuizData { question = "하루만 맡겨도 이자를 주며 입출금이 자유로운 증권사 통장은?", answers = new string[] { "CMA", "적금", "청약통장" }, correctAnswer = 0 },
+        new QuizData { question = "하나의 앱에서 모든 은행 계좌를 조회하고 이체할 수 있는 서비스는?", answers = new string[] { "오픈뱅킹", "텔레뱅킹", "프라이빗뱅킹" }, correctAnswer = 0 },
+        new QuizData { question = "매번 새로운 비밀번호가 생성되는 일회용 비밀번호 생성기는?", answers = new string[] { "보안카드", "OTP", "공인인증서" }, correctAnswer = 1 },
+        new QuizData { question = "문자(SMS) 속 인터넷 주소를 눌러 악성코드를 설치하는 사기는?", answers = new string[] { "보이스피싱", "스미싱", "파밍" }, correctAnswer = 1 },
     };
 
     void Awake() { instance = this; }
@@ -171,7 +198,9 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             if (startPanel) startPanel.SetActive(true);
 
-            // [수정] 타이틀 BGM 재생
+            // [추가] 퀴즈 풀 초기화
+            ResetQuizPool();
+
             if (SoundManager.instance != null)
             {
                 SoundManager.instance.PlayBGM(SoundManager.instance.titleBgm);
@@ -183,6 +212,16 @@ public class GameManager : MonoBehaviour
             if (startPanel) startPanel.SetActive(false);
 
             if (SoundManager.instance) SoundManager.instance.PlayHomeBGM();
+        }
+    }
+
+    // [추가] 퀴즈 풀(Pool) 초기화 함수
+    void ResetQuizPool()
+    {
+        availableQuizIndices.Clear();
+        for (int i = 0; i < quizzes.Length; i++)
+        {
+            availableQuizIndices.Add(i);
         }
     }
 
@@ -234,7 +273,10 @@ public class GameManager : MonoBehaviour
         baseSalary = 2000000;
         isSavingsJoined = false;
         hasSelfDevThisMonth = false;
-        hasQuizThisMonth = false; // [추가]
+        hasQuizThisMonth = false;
+
+        // [추가] 재시작 시 퀴즈 풀도 리셋
+        ResetQuizPool();
     }
 
     public void OnClickNextMonth()
@@ -265,54 +307,70 @@ public class GameManager : MonoBehaviour
     void CalculateAndShowReport()
     {
         int currentSalary = baseSalary;
-        int pension = (int)(currentSalary * 0.045f);
-        int health = (int)(currentSalary * 0.035f);
-        int tax = (int)(currentSalary * 0.03f);
 
-        int totalDeduction = pension + health + tax;
+        // [수정 1] 반올림을 사용하여 1원 오차 해결 (Mathf.RoundToInt)
+        int pension = Mathf.RoundToInt(currentSalary * 0.045f);
+        int health = Mathf.RoundToInt(currentSalary * 0.035f);
+        int tax = Mathf.RoundToInt(currentSalary * 0.03f);
+        int loanInterest = (loan > 0) ? Mathf.RoundToInt(loan * 0.02f) : 0;
+
+        int totalDeduction = pension + health + tax + loanInterest;
+
+        // 순수 실수령액 (세전 - 공제총액)
         int netPay = currentSalary - totalDeduction;
 
-        if (loan > 0) netPay -= (int)(loan * 0.02f);
-
+        // 적금 처리 로직
         bool isSavingsSuccess = false;
+        int savingsAmount = 0; // 이번 달 실제 저축할 금액
+
         if (isSavingsJoined)
         {
+            // [수정 2] 실수령액(netPay) 자체가 아니라, 현재 가진 돈으로 비교해야 안전함
+            // (여기서는 기획 의도에 따라 netPay에서 뺄지, cash에서 뺄지 결정. 보통 적금은 월급 들어오자마자 나가므로 netPay 기준 유지하되 변수만 분리)
             if (cash + netPay >= MONTHLY_SAVINGS_AMOUNT)
             {
-                savings += MONTHLY_SAVINGS_AMOUNT;
-                netPay -= MONTHLY_SAVINGS_AMOUNT;
+                savingsAmount = MONTHLY_SAVINGS_AMOUNT;
+                savings += savingsAmount;
                 isSavingsSuccess = true;
             }
         }
 
-        int interest = (int)(savings * 0.005f);
+        // 적금 이자 계산 (이자도 반올림)
+        int interest = Mathf.RoundToInt(savings * 0.005f);
         savings += interest;
 
-        cash += netPay;
-        cash -= LIVING_COST;
+        // 실제 현금 반영 (실수령액 - 생활비 - 적금)
+        int actualChange = netPay - LIVING_COST - savingsAmount;
+        cash += actualChange;
+
         stress += 40;
 
         UpdateUI();
 
+        // [UI 표시]
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
         if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
         if (txtReportHealth) txtReportHealth.text = $"-{health:N0}";
         if (txtReportTax) txtReportTax.text = $"-{tax:N0}";
-        if (txtReportLoan) txtReportLoan.text = (loan > 0) ? $"-{(int)(loan * 0.02f):N0}" : "0";
+        if (txtReportLoan) txtReportLoan.text = $"-{loanInterest:N0}";
+
+        // [수정 3] 이제 netPay는 적금이 빠지기 전의 순수 실수령액을 보여줍니다. (229만원 예상)
         if (txtReportNetPay) txtReportNetPay.text = $"{netPay:N0}";
+
         if (txtReportLiving) txtReportLiving.text = $"-{LIVING_COST:N0}";
 
         if (txtReportSavings)
         {
             if (!isSavingsJoined) txtReportSavings.text = "미가입";
-            else txtReportSavings.text = isSavingsSuccess ? $"-{MONTHLY_SAVINGS_AMOUNT:N0}" : "잔액 부족";
+            else txtReportSavings.text = isSavingsSuccess ? $"-{savingsAmount:N0}" : "잔액 부족";
         }
+
+        // 이자 수익은 적금 통장에 쌓이는 돈이므로 현금 변동에는 포함하지 않는 것이 일반적입니다. (UI 표시는 유지)
         if (txtReportS_Interest) txtReportS_Interest.text = $"+{interest:N0}";
 
-        int finalChange = netPay - LIVING_COST;
-        if (txtReportFinal) txtReportFinal.text = $"{finalChange:N0}";
+        // 최종 현금 변동
+        if (txtReportFinal) txtReportFinal.text = $"{actualChange:N0}";
     }
-
     public void OnConfirmReport()
     {
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
@@ -404,7 +462,7 @@ public class GameManager : MonoBehaviour
         if (quizPanel) quizPanel.SetActive(false);
         if (quizCorrectPanel) quizCorrectPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
         if (quizWrongPanel) quizWrongPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
-        
+
         // 실제로 끄기
         if (quizCorrectPanel) quizCorrectPanel.SetActive(false);
         if (quizWrongPanel) quizWrongPanel.SetActive(false);
@@ -537,7 +595,7 @@ public class GameManager : MonoBehaviour
         if (alertPanel)
         {
             alertPanel.SetActive(true);
-            if (txtAlertMsg) txtAlertMsg.text = "편의점 이용 완료!\n스트레스 -30";
+            if (txtAlertMsg) txtAlertMsg.text = "이용 완료!\n스트레스 -30";
         }
     }
 
@@ -630,7 +688,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    // --- [추가/수정] 1단계: 퀴즈 참여 여부 확인 패널 띄우기 ---
+    // --- [수정] 1단계: 퀴즈 참여 여부 확인 패널 띄우기 ---
     public void ShowQuizConfirm()
     {
         if (quizTryPanel == null || isGameOver) return;
@@ -655,11 +713,26 @@ public class GameManager : MonoBehaviour
     {
         if (quizTryPanel) quizTryPanel.SetActive(false); // 확인창 닫기
         if (quizPanel == null) return;
-        
+
         quizPanel.SetActive(true);
 
-        int rand = Random.Range(0, quizzes.Length);
-        QuizData selectedQuiz = quizzes[rand];
+        // [중복 방지] 남은 문제가 없다면 다시 리필
+        if (availableQuizIndices.Count == 0)
+        {
+            ResetQuizPool();
+        }
+
+        // 1. 리스트에서 랜덤 인덱스 뽑기
+        int randomListIndex = Random.Range(0, availableQuizIndices.Count);
+
+        // 2. 실제 문제 번호 가져오기
+        int realQuizIndex = availableQuizIndices[randomListIndex];
+
+        // 3. 사용한 문제 번호 리스트에서 제거
+        availableQuizIndices.RemoveAt(randomListIndex);
+
+        // 4. 문제 데이터 설정
+        QuizData selectedQuiz = quizzes[realQuizIndex];
         quizQuestion.text = selectedQuiz.question;
 
         // 정답 번호 (1, 2, 3번 중 하나)
@@ -667,7 +740,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            int index = i; 
+            int index = i;
             quizBtnTexts[i].text = selectedQuiz.answers[i];
             quizButtons[i].onClick.RemoveAllListeners();
             // OnClickAnswer 호출 시 정답 번호(displayCorrectNum) 전달
@@ -681,13 +754,13 @@ public class GameManager : MonoBehaviour
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
 
         hasQuizThisMonth = true;
-        quizPanel.SetActive(false); 
+        quizPanel.SetActive(false);
 
         if (isCorrect)
         {
             cash += 100000;
             UpdateUI();
-            if (quizCorrectPanel) quizCorrectPanel.SetActive(true); 
+            if (quizCorrectPanel) quizCorrectPanel.SetActive(true);
         }
         else
         {
