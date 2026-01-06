@@ -185,7 +185,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 160
+        y: 176
         width: 16
         height: 16
       alignment: 0
@@ -1692,6 +1692,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_76
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 160
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.5000076, y: 0.5000012}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51bb2a54153b0499aa30be1b59f7367d
+      internalID: 1731341815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1777,6 +1798,7 @@ TextureImporter:
       ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_73: 1334529954
       ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_74: -1934616749
       ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_75: -1891744260
+      ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_76: 1731341815
       ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_8: -791244534
       ME_Singles_City_Props_16x16_Kiosk_Icecream_Example_9: 1091010728
   mipmapLimitGroupName: 
