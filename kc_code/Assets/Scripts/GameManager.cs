@@ -111,11 +111,11 @@ public class GameManager : MonoBehaviour
     // [수정] 게임 내 콘텐츠와 직접 관련된 팁
     private string[] financialFacts = new string[]
     {
-        "[Tip!] 적금에 가입하면 만기 시 '원금 + 이자'를\n받을 수 있어 목돈 마련에 유리합니다.",
+        "[Tip!] 적금에 가입하면 만기 시 '원금 + 적금 이자'를\n받을 수 있어 목돈 마련에 유리합니다.",
         "[Tip!] '복리'란 이자에 또 이자가 붙는 효과입니다.\n게임에서도 저축액이 늘어날수록 이자가 커집니다!",
         "[Tip!] 스트레스가 100%가 되면 건강을 잃고 게임이 종료됩니다.\n적절한 휴식도 투자입니다.",
         "[Tip!] 갑작스러운 교통사고에 대비해 항상\n'비상금(현금)'을 남겨둬야 파산을 막을 수 있습니다.",
-        "[Tip!] 대출을 받으면 매달 이자가 지출됩니다.\n감당할 수 있는 능력 안에서만 빌리세요.",
+        "[Tip!] 대출을 받으면 매달 대출 이자가 지출됩니다.\n감당할 수 있는 능력 안에서만 빌리세요.",
         "[Tip!] 월급 명세서의 '실수령액'은 세금과 보험료를 뗀,\n실제로 내가 쓸 수 있는 돈입니다.",
         "[Tip!] 현금이 바닥나면 파산하게 됩니다.\n수입보다 지출이 많지 않도록 관리하세요."
     };
@@ -136,19 +136,18 @@ public class GameManager : MonoBehaviour
         new QuizData { question = "예금자보호법으로 보호받는 한도는?", answers = new string[] { "인당 3천만원", "인당 5천만원", "인당 1억원" }, correctAnswer = 1 },
         new QuizData { question = "주식에서 기업이 이익을 주주에게 나눠주는 것은?", answers = new string[] { "배당", "이자", "상환" }, correctAnswer = 0 },
         new QuizData { question = "물가가 지속적으로 오르는 현상은?", answers = new string[] { "디플레이션", "스태그플레이션", "인플레이션" }, correctAnswer = 2 },
-        new QuizData { question = "신용점수가 낮아지면 발생하는 불이익은?", answers = new string[] { "대출 금리 상승", "취업 즉시 제한", "은행 이용 불가" }, correctAnswer = 0 },
+        new QuizData { question = "신용점수가 낮아지면 발생하는 불이익은?", answers = new string[] { "대출 금리 상승", "취업 즉시 제한", "모든 은행 서비스 이용 불가" }, correctAnswer = 0 },
      
         // 2. 격언 및 상식
         new QuizData { question = "분산 투자의 중요성을 강조한 격언은?", answers = new string[] { "계란을 한 바구니에 담지 마라", "티끌 모아 태산", "소 잃고 외양간 고친다" }, correctAnswer = 0 },
         new QuizData { question = "소득에서 세금 등을 뺀 실제 쓸 수 있는 돈은?", answers = new string[] { "총급여", "실수령액", "기본급" }, correctAnswer = 1 },
      
         // 3. 상품의 특성 비교
-        new QuizData { question = "은행에 돈을 맡기는 가장 안전한 방법은?", answers = new string[] { "주식", "예금", "가상화폐" }, correctAnswer = 1 },
-        new QuizData { question = "국가에 납부하는 필수 비용은?", answers = new string[] { "기부금", "세금", "배당금" }, correctAnswer = 1 },
+        new QuizData { question = "법에 따라 국민이 의무적으로 국가에 납부해야 하는 비용은?", answers = new string[] { "기부금", "세금", "배당금" }, correctAnswer = 1 },
         new QuizData { question = "수입보다 지출이 많을 때 발생하는 상태는?", answers = new string[] { "흑자", "적자", "무역" }, correctAnswer = 1 },
         new QuizData { question = "돈의 가치가 떨어지고 물가가 오르는 이유는?", answers = new string[] { "화폐 공급 증가", "화폐 공급 감소", "수입 증가" }, correctAnswer = 0 },
         new QuizData { question = "중앙은행이 결정하는 기본 금리는?", answers = new string[] { "시장금리", "우대금리", "기준금리" }, correctAnswer = 2 },
-        new QuizData { question = "돈을 빌려준 대가로 받는 돈은?", answers = new string[] { "이자", "원금", "할부금" }, correctAnswer = 0 },
+        new QuizData { question = "돈을 빌려준 것에 대해 원금 외에 추가로 받는 돈은?", answers = new string[] { "이자", "원금", "할부금" }, correctAnswer = 0 },
      
         // 4. 행동에 따른 결과
         new QuizData { question = "나라 간의 돈을 바꾸는 비율은?", answers = new string[] { "금리", "환율", "주가" }, correctAnswer = 1 },
@@ -159,7 +158,7 @@ public class GameManager : MonoBehaviour
         new QuizData { question = "빚을 갚지 못해 법적으로 선언하는 상태는?", answers = new string[] { "파산", "정지", "해지" }, correctAnswer = 0 },
 
         // 5. 세금 및 제도
-        new QuizData { question = "1년 동안 낸 세금을 정산하여 더 낸 돈을 돌려받거나 더 내는 절차는?", answers = new string[] { "부가가치세 신고", "연말정산", "분리과세" }, correctAnswer = 1 },
+        new QuizData { question = "1년 동안 낸 세금을 정산하여 낸 돈에 대해 환급 및 환수하는 절차는?", answers = new string[] { "부가가치세 신고", "연말정산", "분리과세" }, correctAnswer = 1 },
         new QuizData { question = "현금 결제 시 발급받아 연말정산 소득공제 혜택을 받는 영수증은?", answers = new string[] { "간이영수증", "현금영수증", "세금계산서" }, correctAnswer = 1 },
         new QuizData { question = "매달 월세를 내지 않고 보증금을 맡겼다가 돌려받는 임대차 제도는?", answers = new string[] { "월세", "매매", "전세" }, correctAnswer = 2 },
         new QuizData { question = "새 아파트 분양(청약) 자격을 얻기 위해 가입하는 필수 통장은?", answers = new string[] { "주택청약종합저축", "정기예금", "마이너스통장" }, correctAnswer = 0 },
@@ -326,7 +325,7 @@ public class GameManager : MonoBehaviour
         int currentSalary = baseSalary;
 
         // 반올림 적용 (계산 오차 해결)
-        int pension = Mathf.RoundToInt(currentSalary * 0.045f);
+        int pension = Mathf.RoundToInt(currentSalary * 0.065f);
         int health = Mathf.RoundToInt(currentSalary * 0.035f);
         int tax = Mathf.RoundToInt(currentSalary * 0.03f);
         int loanInterest = (loan > 0) ? Mathf.RoundToInt(loan * 0.02f) : 0;

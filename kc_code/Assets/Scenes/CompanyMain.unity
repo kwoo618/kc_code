@@ -60302,7 +60302,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAD6D\uBBFC\uC5F0\uAE08(4.5%)"
+  m_text: "\uAD6D\uBBFC\uC5F0\uAE08(6.5%)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bf935e2d905004e17b3c6ace00a42b1f, type: 2}
   m_sharedMaterial: {fileID: 2929301076397319027, guid: bf935e2d905004e17b3c6ace00a42b1f, type: 2}
