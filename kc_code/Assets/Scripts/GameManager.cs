@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Collections.Generic; // [필수] List 사용을 위해 추가됨
+using System.Collections.Generic; // List 사용을 위해 필수
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public GameObject academyPanel;
     public GameObject reportPanel;
     public GameObject nextPanel;
+    public GameObject pausePanel; // [추가] 일시정지 메뉴 패널
 
     [Header("--- 알림용 패널 ---")]
     public GameObject alertPanel;
@@ -130,18 +131,18 @@ public class GameManager : MonoBehaviour
     // [수정] 40개의 팩트 기반 퀴즈 데이터
     private QuizData[] quizzes = new QuizData[]
     {
-        // 1. 경제 용어 정의 (객관적 사실)
+        // 1. 경제 용어 정의
         new QuizData { question = "'복리'의 의미로 올바른 것은?", answers = new string[] { "원금에만 이자가 붙음", "이자에 이자가 붙음", "대출 이자가 줄어듦" }, correctAnswer = 1 },
         new QuizData { question = "예금자보호법으로 보호받는 한도는?", answers = new string[] { "인당 3천만원", "인당 5천만원", "인당 1억원" }, correctAnswer = 1 },
         new QuizData { question = "주식에서 기업이 이익을 주주에게 나눠주는 것은?", answers = new string[] { "배당", "이자", "상환" }, correctAnswer = 0 },
         new QuizData { question = "물가가 지속적으로 오르는 현상은?", answers = new string[] { "디플레이션", "스태그플레이션", "인플레이션" }, correctAnswer = 2 },
         new QuizData { question = "신용점수가 낮아지면 발생하는 불이익은?", answers = new string[] { "대출 금리 상승", "취업 즉시 제한", "은행 이용 불가" }, correctAnswer = 0 },
      
-        // 2. 격언 및 상식 (널리 통용되는 원칙)
+        // 2. 격언 및 상식
         new QuizData { question = "분산 투자의 중요성을 강조한 격언은?", answers = new string[] { "계란을 한 바구니에 담지 마라", "티끌 모아 태산", "소 잃고 외양간 고친다" }, correctAnswer = 0 },
         new QuizData { question = "소득에서 세금 등을 뺀 실제 쓸 수 있는 돈은?", answers = new string[] { "총급여", "실수령액", "기본급" }, correctAnswer = 1 },
      
-        // 3. 상품의 특성 비교 (가치 판단이 아닌 '특징' 비교)
+        // 3. 상품의 특성 비교
         new QuizData { question = "은행에 돈을 맡기는 가장 안전한 방법은?", answers = new string[] { "주식", "예금", "가상화폐" }, correctAnswer = 1 },
         new QuizData { question = "국가에 납부하는 필수 비용은?", answers = new string[] { "기부금", "세금", "배당금" }, correctAnswer = 1 },
         new QuizData { question = "수입보다 지출이 많을 때 발생하는 상태는?", answers = new string[] { "흑자", "적자", "무역" }, correctAnswer = 1 },
@@ -149,7 +150,7 @@ public class GameManager : MonoBehaviour
         new QuizData { question = "중앙은행이 결정하는 기본 금리는?", answers = new string[] { "시장금리", "우대금리", "기준금리" }, correctAnswer = 2 },
         new QuizData { question = "돈을 빌려준 대가로 받는 돈은?", answers = new string[] { "이자", "원금", "할부금" }, correctAnswer = 0 },
      
-        // 4. 행동에 따른 결과 (인과 관계)
+        // 4. 행동에 따른 결과
         new QuizData { question = "나라 간의 돈을 바꾸는 비율은?", answers = new string[] { "금리", "환율", "주가" }, correctAnswer = 1 },
         new QuizData { question = "개인의 경제적 신용도를 숫자로 나타낸 것은?", answers = new string[] { "신용점수", "시험점수", "통장잔고" }, correctAnswer = 0 },
         new QuizData { question = "원금 손실 가능성이 있는 금융 상품은?", answers = new string[] { "정기예금", "펀드/주식", "청약저축" }, correctAnswer = 1 },
@@ -212,6 +213,22 @@ public class GameManager : MonoBehaviour
             if (startPanel) startPanel.SetActive(false);
 
             if (SoundManager.instance) SoundManager.instance.PlayHomeBGM();
+        }
+    }
+
+    // [추가] ESC 키 입력을 감지하는 Update 함수
+    void Update()
+    {
+        // 게임이 시작되지 않았거나, 이미 게임오버 상태라면 ESC 작동 안 함
+        if (!isGameStarted || isGameOver) return;
+
+        // ESC 키 입력 확인
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // (선택사항) 만약 중요한 팝업(퀴즈, 사고, 결과창 등)이 켜져있다면 일시정지를 막을 수 있음
+            // if (quizPanel.activeSelf || reportPanel.activeSelf) return;
+
+            OnTogglePause();
         }
     }
 
@@ -308,25 +325,21 @@ public class GameManager : MonoBehaviour
     {
         int currentSalary = baseSalary;
 
-        // [수정 1] 반올림을 사용하여 1원 오차 해결 (Mathf.RoundToInt)
+        // 반올림 적용 (계산 오차 해결)
         int pension = Mathf.RoundToInt(currentSalary * 0.045f);
         int health = Mathf.RoundToInt(currentSalary * 0.035f);
         int tax = Mathf.RoundToInt(currentSalary * 0.03f);
         int loanInterest = (loan > 0) ? Mathf.RoundToInt(loan * 0.02f) : 0;
 
         int totalDeduction = pension + health + tax + loanInterest;
+        int netPay = currentSalary - totalDeduction; // 순수 실수령액
 
-        // 순수 실수령액 (세전 - 공제총액)
-        int netPay = currentSalary - totalDeduction;
-
-        // 적금 처리 로직
+        // 적금 로직 (실수령액이 아니라 현재 현금 + 들어올 돈으로 계산)
         bool isSavingsSuccess = false;
-        int savingsAmount = 0; // 이번 달 실제 저축할 금액
+        int savingsAmount = 0;
 
         if (isSavingsJoined)
         {
-            // [수정 2] 실수령액(netPay) 자체가 아니라, 현재 가진 돈으로 비교해야 안전함
-            // (여기서는 기획 의도에 따라 netPay에서 뺄지, cash에서 뺄지 결정. 보통 적금은 월급 들어오자마자 나가므로 netPay 기준 유지하되 변수만 분리)
             if (cash + netPay >= MONTHLY_SAVINGS_AMOUNT)
             {
                 savingsAmount = MONTHLY_SAVINGS_AMOUNT;
@@ -335,11 +348,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 적금 이자 계산 (이자도 반올림)
         int interest = Mathf.RoundToInt(savings * 0.005f);
         savings += interest;
 
-        // 실제 현금 반영 (실수령액 - 생활비 - 적금)
+        // 최종 현금 변동 (실수령액 - 생활비 - 저축액)
         int actualChange = netPay - LIVING_COST - savingsAmount;
         cash += actualChange;
 
@@ -347,16 +359,13 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
-        // [UI 표시]
+        // UI 표시
         if (txtReportSalary) txtReportSalary.text = $"{currentSalary:N0}";
         if (txtReportPension) txtReportPension.text = $"-{pension:N0}";
         if (txtReportHealth) txtReportHealth.text = $"-{health:N0}";
         if (txtReportTax) txtReportTax.text = $"-{tax:N0}";
         if (txtReportLoan) txtReportLoan.text = $"-{loanInterest:N0}";
-
-        // [수정 3] 이제 netPay는 적금이 빠지기 전의 순수 실수령액을 보여줍니다. (229만원 예상)
         if (txtReportNetPay) txtReportNetPay.text = $"{netPay:N0}";
-
         if (txtReportLiving) txtReportLiving.text = $"-{LIVING_COST:N0}";
 
         if (txtReportSavings)
@@ -365,12 +374,10 @@ public class GameManager : MonoBehaviour
             else txtReportSavings.text = isSavingsSuccess ? $"-{savingsAmount:N0}" : "잔액 부족";
         }
 
-        // 이자 수익은 적금 통장에 쌓이는 돈이므로 현금 변동에는 포함하지 않는 것이 일반적입니다. (UI 표시는 유지)
         if (txtReportS_Interest) txtReportS_Interest.text = $"+{interest:N0}";
-
-        // 최종 현금 변동
         if (txtReportFinal) txtReportFinal.text = $"{actualChange:N0}";
     }
+
     public void OnConfirmReport()
     {
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
@@ -392,7 +399,6 @@ public class GameManager : MonoBehaviour
         {
             fadeImage.gameObject.SetActive(true);
             float t = 0;
-            // 어두워지기 (Fade In)
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime * 2f;
@@ -402,12 +408,11 @@ public class GameManager : MonoBehaviour
             fadeImage.color = new Color(0, 0, 0, 1);
         }
 
-        // [수정] 1초만 대기 후 진행 (빠른 템포)
         yield return new WaitForSecondsRealtime(1.0f);
 
         currentMonth++;
         hasSelfDevThisMonth = false;
-        hasQuizThisMonth = false; // [추가] 매달 퀴즈 기회 리셋
+        hasQuizThisMonth = false;
 
         if (currentMonth > 10)
         {
@@ -457,18 +462,16 @@ public class GameManager : MonoBehaviour
         if (duplicateActionPanel) duplicateActionPanel.SetActive(false);
         if (accidentPanel) accidentPanel.SetActive(false);
 
-        // 추가된 패널들 끄기
         if (quizTryPanel) quizTryPanel.SetActive(false);
         if (quizPanel) quizPanel.SetActive(false);
-        if (quizCorrectPanel) quizCorrectPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
-        if (quizWrongPanel) quizWrongPanel.SetActive(true); // 활성화 되어있다면 끄기 위해 수정
+        if (quizCorrectPanel) quizCorrectPanel.SetActive(true);
+        if (quizWrongPanel) quizWrongPanel.SetActive(true);
 
-        // 실제로 끄기
         if (quizCorrectPanel) quizCorrectPanel.SetActive(false);
         if (quizWrongPanel) quizWrongPanel.SetActive(false);
 
         // 중요 패널들이 다 꺼졌다면 시간 재개
-        if (!reportPanel.activeSelf && !accidentPanel.activeSelf && !quizPanel.activeSelf && !quizTryPanel.activeSelf)
+        if (!reportPanel.activeSelf && !accidentPanel.activeSelf && !quizPanel.activeSelf && !quizTryPanel.activeSelf && (pausePanel == null || !pausePanel.activeSelf))
         {
             Time.timeScale = 1;
         }
@@ -664,7 +667,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (player != null) player.transform.position = new Vector3(98.8f, -65.56f, 0);
+        if (player != null) player.transform.position = new Vector3(95.4f, -65.5f, 0);
 
         currentMonth++;
         hasSelfDevThisMonth = false;
@@ -688,12 +691,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    // --- [수정] 1단계: 퀴즈 참여 여부 확인 패널 띄우기 ---
     public void ShowQuizConfirm()
     {
         if (quizTryPanel == null || isGameOver) return;
 
-        // 이번 달 이미 참여했는지 체크
         if (hasQuizThisMonth)
         {
             if (alertPanel)
@@ -704,38 +705,29 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Time.timeScale = 0; // 게임 일시정지
+        Time.timeScale = 0;
         quizTryPanel.SetActive(true);
     }
 
-    // --- [수정] 2단계: 실제 퀴즈 문제 패널 시작 ("예" 버튼 클릭 시) ---
     public void StartQuiz()
     {
-        if (quizTryPanel) quizTryPanel.SetActive(false); // 확인창 닫기
+        if (quizTryPanel) quizTryPanel.SetActive(false);
         if (quizPanel == null) return;
 
         quizPanel.SetActive(true);
 
-        // [중복 방지] 남은 문제가 없다면 다시 리필
         if (availableQuizIndices.Count == 0)
         {
             ResetQuizPool();
         }
 
-        // 1. 리스트에서 랜덤 인덱스 뽑기
         int randomListIndex = Random.Range(0, availableQuizIndices.Count);
-
-        // 2. 실제 문제 번호 가져오기
         int realQuizIndex = availableQuizIndices[randomListIndex];
-
-        // 3. 사용한 문제 번호 리스트에서 제거
         availableQuizIndices.RemoveAt(randomListIndex);
 
-        // 4. 문제 데이터 설정
         QuizData selectedQuiz = quizzes[realQuizIndex];
         quizQuestion.text = selectedQuiz.question;
 
-        // 정답 번호 (1, 2, 3번 중 하나)
         int displayCorrectNum = selectedQuiz.correctAnswer + 1;
 
         for (int i = 0; i < 3; i++)
@@ -743,12 +735,10 @@ public class GameManager : MonoBehaviour
             int index = i;
             quizBtnTexts[i].text = selectedQuiz.answers[i];
             quizButtons[i].onClick.RemoveAllListeners();
-            // OnClickAnswer 호출 시 정답 번호(displayCorrectNum) 전달
             quizButtons[i].onClick.AddListener(() => OnClickAnswer(index == selectedQuiz.correctAnswer, displayCorrectNum));
         }
     }
 
-    // --- [수정] 답 선택 시 결과 패널 처리 ---
     void OnClickAnswer(bool isCorrect, int correctNum)
     {
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
@@ -790,6 +780,51 @@ public class GameManager : MonoBehaviour
         if (quizPanel) quizPanel.SetActive(false);
         if (quizCorrectPanel) quizCorrectPanel.SetActive(false);
         if (quizWrongPanel) quizWrongPanel.SetActive(false);
+        if (pausePanel) pausePanel.SetActive(false); // [추가] 일시정지 패널도 닫기
+    }
+
+    // [추가] 일시정지 패널을 켜고 끄는 함수 (토글)
+    // ESC 키를 누르거나, '계속하기' 버튼을 누를 때 호출됩니다.
+    public void OnTogglePause()
+    {
+        if (pausePanel == null) return;
+
+        bool isActive = pausePanel.activeSelf;
+
+        // 켜져있으면 -> 끄고 시간 흐르게
+        if (isActive)
+        {
+            pausePanel.SetActive(false);
+            Time.timeScale = 1;
+        }
+        // 꺼져있으면 -> 켜고 시간 멈춤
+        else
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = 0;
+        }
+
+        if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
+    }
+
+    // [추가] 메인 메뉴로 돌아가기 (시간 정상화 후 재시작)
+    public void OnClickMainMenu()
+    {
+        Time.timeScale = 1;
+        GameRestart();
+    }
+
+    // [추가] 다시 시작하기 (시간 정상화 후 재시도)
+    public void OnClickRestart()
+    {
+        Time.timeScale = 1;
+        GameRetry();
+    }
+
+    // [추가] 게임 종료
+    public void OnClickQuit()
+    {
+        GameExit();
     }
 
     void UpdateUI()
