@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     public GameObject academyPanel;
     public GameObject reportPanel;
     public GameObject nextPanel;
-    public GameObject pausePanel; // [추가] 일시정지 메뉴 패널
+    public GameObject pausePanel;
+    public GameObject mobileUI;
 
     [Header("--- 알림용 패널 ---")]
     public GameObject alertPanel;
@@ -192,6 +193,7 @@ public class GameManager : MonoBehaviour
         UpdateUI();
 
         if (tipText) tipText.gameObject.SetActive(false);
+        if (mobileUI) mobileUI.SetActive(false);
 
         if (!isGameStarted)
         {
@@ -210,6 +212,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             if (startPanel) startPanel.SetActive(false);
+            if (mobileUI) mobileUI.SetActive(true);
 
             if (SoundManager.instance) SoundManager.instance.PlayHomeBGM();
         }
@@ -224,9 +227,6 @@ public class GameManager : MonoBehaviour
         // ESC 키 입력 확인
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // (선택사항) 만약 중요한 팝업(퀴즈, 사고, 결과창 등)이 켜져있다면 일시정지를 막을 수 있음
-            // if (quizPanel.activeSelf || reportPanel.activeSelf) return;
-
             OnTogglePause();
         }
     }
@@ -247,6 +247,9 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         Time.timeScale = 1;
         if (startPanel) startPanel.SetActive(false);
+
+        if (mobileUI) mobileUI.SetActive(true);
+
         UpdateUI();
 
         if (SoundManager.instance)
@@ -473,6 +476,7 @@ public class GameManager : MonoBehaviour
         if (!reportPanel.activeSelf && !accidentPanel.activeSelf && !quizPanel.activeSelf && !quizTryPanel.activeSelf && (pausePanel == null || !pausePanel.activeSelf))
         {
             Time.timeScale = 1;
+            if (mobileUI) mobileUI.SetActive(true);
         }
     }
 
@@ -676,6 +680,8 @@ public class GameManager : MonoBehaviour
         UpdateUI();
         yield return new WaitForSecondsRealtime(0.5f);
 
+        if (mobileUI) mobileUI.SetActive(true);
+
         if (fadeImage != null)
         {
             float t = 1;
@@ -819,6 +825,7 @@ public class GameManager : MonoBehaviour
         if (SoundManager.instance) SoundManager.instance.PlaySFX(SoundManager.instance.clickSfx);
     }
 
+
     // [추가] 메인 메뉴로 돌아가기 (시간 정상화 후 재시작)
     public void OnClickMainMenu()
     {
@@ -865,6 +872,8 @@ public class GameManager : MonoBehaviour
         if (tipText != null) tipText.gameObject.SetActive(false);
 
         CloseAllPanels();
+
+        if (mobileUI) mobileUI.SetActive(false);
 
         if (SoundManager.instance)
         {
