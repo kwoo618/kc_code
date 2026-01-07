@@ -113,7 +113,7 @@
 
 1. [Releases](https://github.com/사용자계정/저장소이름/releases) 페이지에서 최신 버전의 파일을 다운로드합니다.
 2. 다운로드한 압축 파일을 해제합니다.
-3. `AssetManagementSim.exe`를 실행하여 게임을 시작합니다.
+3. `FinSim.exe`를 실행하여 게임을 시작합니다.
 
 ---
 
