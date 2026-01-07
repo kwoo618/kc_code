@@ -44,3 +44,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1881130135
+    locked: 0
+  - name: CarFront
+    uniqueID: 1696756655
+    locked: 0
+  - name: CarBack
+    uniqueID: 51611041
+    locked: 0
+  - name: Object
+    uniqueID: 2694204807
+    locked: 0
+  - name: electnicline
+    uniqueID: 774845697
+    locked: 0
+  - name: Player
+    uniqueID: 4207705725
+    locked: 0
