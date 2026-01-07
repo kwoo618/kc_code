@@ -1,4 +1,4 @@
-# 💰 사회초년생의 자산 관리 시뮬레이션 (Asset Management Sim)
+# 💰 FinSim(Financial Simulator)
 
 ![Game_Start_Screen](https://github.com/user-attachments/assets/1f4cb485-1f6b-400b-bfac-5070ea29dd05)
 
