@@ -1,4 +1,4 @@
-# 💰 FinSim(Financial Simulator)
+# 💰 FinSim(Financial Simulator) - 금융 시뮬레이터
 
 ![Game_Start_Screen](https://github.com/user-attachments/assets/1f4cb485-1f6b-400b-bfac-5070ea29dd05)
 
