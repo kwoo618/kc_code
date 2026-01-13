@@ -7,6 +7,13 @@ TagManager:
   - Bank
   - Store
   - Academy
+  - Home_BGM
+  - Bank_BGM
+  - Academy_BGM
+  - Door
+  - NextTurn
+  - Quiz
+  - Quiz_BGM
   layers:
   - Default
   - TransparentFX
@@ -43,4 +50,28 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1881130135
+    locked: 0
+  - name: CarFront
+    uniqueID: 1696756655
+    locked: 0
+  - name: CarBack
+    uniqueID: 51611041
+    locked: 0
+  - name: Object
+    uniqueID: 2694204807
+    locked: 0
+  - name: electnicline
+    uniqueID: 774845697
+    locked: 0
+  - name: Car
+    uniqueID: 2553694303
+    locked: 0
+  - name: Player
+    uniqueID: 4207705725
+    locked: 0
+  - name: Object2
+    uniqueID: 3090342547
     locked: 0
